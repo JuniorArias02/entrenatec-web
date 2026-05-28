@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import usarPeriodos from '../hooks/usarPeriodos';
 import usarTemas from '@/modulos/temas/presentacion/hooks/usarTemas';
+import GestorCuadroTeorico from '../componentes/GestorCuadroTeorico';
 import { ArrowLeft, BookOpen, Layers, Award, Terminal } from 'lucide-react';
 
 export default function DetallePeriodoPagina() {
@@ -68,26 +69,20 @@ export default function DetallePeriodoPagina() {
         </div>
       </div>
 
-      {/* Cuadro Teórico del Periodo */}
-      {periodoSeleccionado?.cuadroTeorico && (
-        <div className="bg-white border-2 border-negro shadow-retro p-1">
-          <div className="bg-azul-secundario text-white px-3 py-1 flex items-center justify-between font-mono text-[10px] uppercase font-bold border-b border-black">
-            <span>MARCO_CONCEPTUAL_TEORICO.SYS</span>
-            <span>[ ] X</span>
-          </div>
-          <div className="p-5 bg-blue-50/50 flex flex-col md:flex-row gap-4 items-start">
-            <div className="bg-celeste border-2 border-negro p-3 shadow-retro-sm text-negro shrink-0 select-none">
-              <Layers className="w-6 h-6" />
-            </div>
-            <div>
-              <h3 className="font-extrabold text-sm text-azul-oscuro uppercase mt-0 mb-1">
-                Introducción Teórica del Periodo
-              </h3>
-              <p className="text-sm text-gray-700 leading-relaxed font-medium">
-                {periodoSeleccionado.cuadroTeorico}
-              </p>
-            </div>
-          </div>
+      {/* Cuadro Teórico Pedagógico (Gestor y Visualizador Dinámico) */}
+      {periodoSeleccionado && (
+        <div className="flex flex-col gap-3">
+          <h2 className="text-xl font-bold uppercase text-azul-oscuro flex items-center gap-2 select-none">
+            <span className="w-2.5 h-6 bg-celeste border border-black inline-block"></span>
+            Cuadro Teórico Pedagógico
+          </h2>
+          <GestorCuadroTeorico 
+            periodo={periodoSeleccionado} 
+            gradoId={gradoId} 
+            alGuardar={(payload) => {
+              console.log('API Payload generado listo para guardar:', payload);
+            }}
+          />
         </div>
       )}
 

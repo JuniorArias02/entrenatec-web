@@ -14,7 +14,14 @@ export default class MemoriaPeriodoRepositorio extends PeriodoRepositorio {
         gradoId: 'grado-9',
         nombre: 'Periodo I: Fundamentos de Lógica',
         descripcion: 'Exploración de la resolución de problemas y la lógica de programación.',
-        cuadroTeorico: 'La lógica de programación es la habilidad para resolver problemas informáticos mediante un conjunto ordenado de instrucciones. En este periodo inicial, aprenderás a pensar de manera lógica y estructurada, dividiendo problemas complejos en pasos más sencillos y ordenados (pensamiento computacional).'
+        cuadroTeorico: {
+          componente: 'Solución de problemas con tecnología',
+          competencia: 'Reconozco y utilizo algoritmos para resolver problemas del entorno cotidiano y escolar.',
+          estandares: 'Diseño, construyo y pruebo algoritmos sencillos para resolver problemas específicos.',
+          aprendizaje: 'Identifico la estructura básica de un algoritmo y sus propiedades (finitud, precisión).',
+          evidencia: 'Escribe algoritmos sencillos en lenguaje natural, diagramas de flujo y pseudocódigo para resolver tareas.',
+          intensidad_horaria: '4 horas semanales'
+        }
       }),
       new Periodo({
         id: 'p-9-2',
