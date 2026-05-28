@@ -1,5 +1,6 @@
 import React from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 import {
   Monitor,
   Terminal,
@@ -16,6 +17,8 @@ import { VERSION_SISTEMA } from '@/compartido/constantes/version';
 
 export default function LandingPagina() {
   const { abrirLogin } = useOutletContext();
+  const navigate = useNavigate();
+  const { estaAutenticado } = usarAutenticacion();
 
   return (
     <div className="flex flex-col gap-8 py-4 animate-fade-in">
@@ -46,13 +49,23 @@ export default function LandingPagina() {
             </p>
 
             <div className="flex flex-wrap gap-4 mt-2">
-              <button
-                onClick={abrirLogin}
-                className="bg-celeste text-negro border-2 border-negro px-6 py-3 font-bold text-sm tracking-wide shadow-retro hover:bg-azul-secundario hover:text-white active:translate-x-0.5 active:translate-y-0.5 active:shadow-retro-sm transition-all flex items-center gap-2 cursor-pointer"
-              >
-                <Play className="w-4 h-4 fill-current" />
-                INGRESAR AL SISTEMA (INICIAR SESIÓN)
-              </button>
+              {estaAutenticado ? (
+                <button
+                  onClick={() => navigate('/inicio')}
+                  className="bg-celeste text-negro border-2 border-negro px-6 py-3 font-bold text-sm tracking-wide shadow-retro hover:bg-azul-secundario hover:text-white active:translate-x-0.5 active:translate-y-0.5 active:shadow-retro-sm transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  INGRESAR AL SISTEMA
+                </button>
+              ) : (
+                <button
+                  onClick={abrirLogin}
+                  className="bg-celeste text-negro border-2 border-negro px-6 py-3 font-bold text-sm tracking-wide shadow-retro hover:bg-azul-secundario hover:text-white active:translate-x-0.5 active:translate-y-0.5 active:shadow-retro-sm transition-all flex items-center gap-2 cursor-pointer"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  INGRESAR AL SISTEMA (INICIAR SESIÓN)
+                </button>
+              )}
               <a
                 href="#grados"
                 className="bg-white text-negro border-2 border-negro px-6 py-3 font-bold text-sm tracking-wide shadow-retro hover:bg-gris-claro active:translate-x-0.5 active:translate-y-0.5 active:shadow-retro-sm transition-all flex items-center gap-2"
@@ -262,18 +275,37 @@ export default function LandingPagina() {
               <br />
               [+] Estado: Listo para inicio de entrenamiento técnico.
             </div>
-            <div className="text-white mt-2">C:\&gt; login --iniciar</div>
-            <div className="text-white animate-pulse">
-              [+] Abre el panel de login superior o da clic a ingresar.
-            </div>
-            <div className="mt-auto pt-4 flex justify-center">
-              <button
-                onClick={abrirLogin}
-                className="bg-celeste text-negro border-2 border-negro px-4 py-1.5 font-bold font-mono text-xs uppercase shadow-retro hover:bg-white active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
-              >
-                iniciar_sesion.bat
-              </button>
-            </div>
+            {estaAutenticado ? (
+              <>
+                <div className="text-white mt-2">C:\&gt; sistema --inicio</div>
+                <div className="text-yellow-300">
+                  [+] Sesión activa detectada. Cargando panel del estudiante...
+                </div>
+                <div className="mt-auto pt-4 flex justify-center">
+                  <button
+                    onClick={() => navigate('/inicio')}
+                    className="bg-celeste text-negro border-2 border-negro px-4 py-1.5 font-bold font-mono text-xs uppercase shadow-retro hover:bg-white active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                  >
+                    ingresar_sistema.bat
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-white mt-2">C:\&gt; login --iniciar</div>
+                <div className="text-white animate-pulse">
+                  [+] Abre el panel de login superior o da clic a ingresar.
+                </div>
+                <div className="mt-auto pt-4 flex justify-center">
+                  <button
+                    onClick={abrirLogin}
+                    className="bg-celeste text-negro border-2 border-negro px-4 py-1.5 font-bold font-mono text-xs uppercase shadow-retro hover:bg-white active:translate-y-0.5 active:shadow-none transition-all cursor-pointer"
+                  >
+                    iniciar_sesion.bat
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

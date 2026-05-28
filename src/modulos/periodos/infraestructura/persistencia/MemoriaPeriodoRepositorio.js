@@ -15,11 +15,25 @@ export default class MemoriaPeriodoRepositorio extends PeriodoRepositorio {
         nombre: 'Periodo I: Fundamentos de Lógica',
         descripcion: 'Exploración de la resolución de problemas y la lógica de programación.',
         cuadroTeorico: {
-          componente: 'Solución de problemas con tecnología',
-          competencia: 'Reconozco y utilizo algoritmos para resolver problemas del entorno cotidiano y escolar.',
-          estandares: 'Diseño, construyo y pruebo algoritmos sencillos para resolver problemas específicos.',
-          aprendizaje: 'Identifico la estructura básica de un algoritmo y sus propiedades (finitud, precisión).',
-          evidencia: 'Escribe algoritmos sencillos en lenguaje natural, diagramas de flujo y pseudocódigo para resolver tareas.',
+          componente: [
+            'Solución de problemas con tecnología'
+          ],
+          competencia: [
+            'Reconozco y utilizo algoritmos para resolver problemas del entorno cotidiano y escolar.',
+            'Identifico y analizo estructuras de control básicas para optimizar procesos lógicos repetitivos.'
+          ],
+          estandares: [
+            'Diseño, construyo y pruebo algoritmos sencillos para resolver problemas específicos.',
+            'Evalúo la eficiencia y validez de un algoritmo en la solución de una situación planteada.'
+          ],
+          aprendizaje: [
+            'Identifico la estructura básica de un algoritmo y sus propiedades (finitud, precisión).',
+            'Comprendo el concepto de variables y la asignación de valores en lógica de programación.'
+          ],
+          evidencia: [
+            'Escribe algoritmos sencillos en lenguaje natural, diagramas de flujo y pseudocódigo para resolver tareas.',
+            'Presenta la solución de un problema paso a paso de forma secuencial ordenada.'
+          ],
           intensidad_horaria: '4 horas semanales'
         }
       }),

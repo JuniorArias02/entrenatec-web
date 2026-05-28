@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { Monitor, Key, Terminal, HelpCircle } from 'lucide-react';
+import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 import IniciarSesionModal from '@/modulos/autenticacion/presentacion/componentes/IniciarSesionModal';
 import { NOMBRE_SISTEMA, VERSION_SISTEMA } from '@/compartido/constantes/version';
 
 export default function PublicoLayout() {
   const [mostrarLogin, setMostrarLogin] = useState(false);
   const [hora, setHora] = useState('');
+  const navigate = useNavigate();
+  const { estaAutenticado } = usarAutenticacion();
 
   // Reloj digital retro
   useEffect(() => {
@@ -35,13 +38,23 @@ export default function PublicoLayout() {
           </div>
           
           {/* Botón de inicio de sesión destacado en la esquina */}
-          <button 
-            onClick={() => setMostrarLogin(true)}
-            className="bg-celeste text-negro border-2 border-negro px-3 py-1 font-bold text-xs uppercase shadow-retro-sm hover:bg-white active:translate-y-0.5 active:shadow-none cursor-pointer flex items-center gap-1.5 transition-all"
-          >
-            <Key className="w-3.5 h-3.5" />
-            Iniciar Sesión
-          </button>
+          {estaAutenticado ? (
+            <button 
+              onClick={() => navigate('/inicio')}
+              className="bg-celeste text-negro border-2 border-negro px-3 py-1 font-bold text-xs uppercase shadow-retro-sm hover:bg-white active:translate-y-0.5 active:shadow-none cursor-pointer flex items-center gap-1.5 transition-all"
+            >
+              <Key className="w-3.5 h-3.5" />
+              Ingresar al Sistema
+            </button>
+          ) : (
+            <button 
+              onClick={() => setMostrarLogin(true)}
+              className="bg-celeste text-negro border-2 border-negro px-3 py-1 font-bold text-xs uppercase shadow-retro-sm hover:bg-white active:translate-y-0.5 active:shadow-none cursor-pointer flex items-center gap-1.5 transition-all"
+            >
+              <Key className="w-3.5 h-3.5" />
+              Iniciar Sesión
+            </button>
+          )}
         </div>
 
         {/* Menú y estado simulados */}
