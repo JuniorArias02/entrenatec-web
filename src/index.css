@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+
+@theme {
+  --color-celeste: #4FC3F7;
+  --color-azul-secundario: #2563EB;
+  --color-azul-oscuro: #0F172A;
+  --color-gris-claro: #F1F5F9;
+  --color-negro: #000000;
+  
+  --font-rajdhani: "Rajdhani", sans-serif;
+  
+  --shadow-retro: 4px 4px 0px 0px #000000;
+  --shadow-retro-sm: 2px 2px 0px 0px #000000;
+  --shadow-retro-lg: 8px 8px 0px 0px #000000;
+  --shadow-retro-active: 1px 1px 0px 0px #000000;
+}
+
+@utility bg-grid-patron {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px);
+}
+
+@utility bg-checkerboard {
+  background-size: 16px 16px;
+  background-image: 
+    linear-gradient(45deg, #e2e8f0 25%, transparent 25%), 
+    linear-gradient(-45deg, #e2e8f0 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, #e2e8f0 75%), 
+    linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-rajdhani);
+    background-color: var(--color-gris-claro);
+    color: var(--color-azul-oscuro);
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Scrollbar retro estilo Windows */
+  ::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #e2e8f0;
+    border-left: 2px solid #000000;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border: 2px solid #000000;
+    box-shadow: inset 1.5px 1.5px 0px 0px #ffffff, inset -1.5px -1.5px 0px 0px #64748b;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+}
