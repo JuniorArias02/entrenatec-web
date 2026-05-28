@@ -17,9 +17,8 @@ export default function BarraLateral() {
 
   const enlaces = [
     { nombre: 'Inicio', ruta: '/inicio', icono: Home },
-    { nombre: 'Temas', ruta: '/temas', icono: BookOpen },
-    { nombre: 'Materias', ruta: '/materias', icono: Layers },
-    { nombre: 'Usuarios', ruta: '/usuarios', icono: Users },
+    { nombre: 'Plan Curricular', ruta: '/grados', icono: BookOpen },
+    { nombre: 'Mi Perfil', ruta: '/usuarios', icono: Users },
   ];
 
   // Helper para decodificar los datos básicos del JWT (como el ID de usuario 'sub')

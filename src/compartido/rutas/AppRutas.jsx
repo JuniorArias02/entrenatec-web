@@ -6,6 +6,12 @@ import InicioPagina from '@/modulos/inicio/presentacion/paginas/InicioPagina';
 import LandingPagina from '@/modulos/autenticacion/presentacion/paginas/LandingPagina';
 import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 
+// Páginas de los Módulos Curriculares
+import SeleccionGradosPagina from '@/modulos/grados/presentacion/paginas/SeleccionGradosPagina';
+import SeleccionPeriodosPagina from '@/modulos/periodos/presentacion/paginas/SeleccionPeriodosPagina';
+import DetallePeriodoPagina from '@/modulos/periodos/presentacion/paginas/DetallePeriodoPagina';
+import DetalleTemaPagina from '@/modulos/temas/presentacion/paginas/DetalleTemaPagina';
+
 /**
  * Guard para proteger rutas que requieren autenticación.
  * Realiza verificación y refresco automático de token en caso de que esté por expirar.
@@ -66,55 +72,17 @@ export default function AppRutas() {
         {/* Página de Inicio / Dashboard */}
         <Route path="/inicio" element={<InicioPagina />} />
         
-        {/* Rutas temporales para los otros módulos */}
-        <Route path="/temas" element={
-          <div className="bg-white border-2 border-negro shadow-retro p-6 max-w-2xl mx-auto my-8">
-            <div className="bg-azul-secundario text-white px-3 py-1 font-bold text-xs uppercase flex justify-between border-b-2 border-negro mb-4">
-              <span>EXPLORADOR_TEMAS.EXE</span>
-              <span>[ ] X</span>
-            </div>
-            <h1 className="text-3xl font-extrabold uppercase text-azul-oscuro m-0 pb-2">
-              Módulo de Temas
-            </h1>
-            <p className="text-gray-700 font-medium mt-3">
-              Aquí se renderizará el creador y visualizador dinámico de temas con el <code className="bg-gray-100 text-red-600 px-1 border border-gray-300">RenderizadorBloques</code>.
-            </p>
-            <div className="mt-6 flex justify-end">
-              <Link 
-                to="/inicio" 
-                className="bg-celeste text-negro border-2 border-negro px-4 py-2 font-bold text-xs shadow-retro-sm hover:bg-azul-secundario hover:text-white transition-all"
-              >
-                Volver al Inicio
-              </Link>
-            </div>
-          </div>
-        } />
+        {/* Módulos Curriculares (Grados, Periodos y Temas) */}
+        <Route path="/grados" element={<SeleccionGradosPagina />} />
+        <Route path="/grados/:gradoId/periodos" element={<SeleccionPeriodosPagina />} />
+        <Route path="/grados/:gradoId/periodos/:periodoId" element={<DetallePeriodoPagina />} />
+        <Route path="/temas/:temaId" element={<DetalleTemaPagina />} />
 
-        <Route path="/materias" element={
-          <div className="bg-white border-2 border-negro shadow-retro p-6 max-w-2xl mx-auto my-8 bg-checkerboard">
-            <div className="bg-white border-2 border-black p-6 shadow-retro-sm">
-              <div className="bg-azul-oscuro text-white px-3 py-1 font-bold text-xs uppercase flex justify-between border-b-2 border-negro mb-4">
-                <span>MATERIAS_SISTEMA.EXE</span>
-                <span>[ ] X</span>
-              </div>
-              <h1 className="text-3xl font-extrabold uppercase text-azul-oscuro m-0 pb-2">
-                Módulo de Materias
-              </h1>
-              <p className="text-gray-700 font-medium mt-3">
-                Listado de materias, planes y mallas curriculares. Se integrará con el caso de uso del dominio.
-              </p>
-              <div className="mt-6 flex justify-end">
-                <Link 
-                  to="/inicio" 
-                  className="bg-white text-negro border-2 border-negro px-4 py-2 font-bold text-xs shadow-retro-sm hover:bg-gris-claro transition-all"
-                >
-                  Volver al Inicio
-                </Link>
-              </div>
-            </div>
-          </div>
-        } />
+        {/* Redirecciones de accesos rápidos */}
+        <Route path="/temas" element={<Navigate to="/grados" replace />} />
+        <Route path="/materias" element={<Navigate to="/grados" replace />} />
 
+        {/* Ruta para el perfil / administración de usuarios */}
         <Route path="/usuarios" element={
           <div className="bg-white border-2 border-negro shadow-retro p-6 max-w-2xl mx-auto my-8">
             <div className="bg-azul-oscuro text-white px-3 py-1 font-bold text-xs uppercase flex justify-between border-b-2 border-negro mb-4">
@@ -125,7 +93,7 @@ export default function AppRutas() {
               Gestión de Usuarios
             </h1>
             <p className="text-gray-700 font-medium mt-3">
-              Módulo de usuarios y roles (Profesores, Estudiantes, Administradores).
+              Módulo de perfil del estudiante e historial de rendimiento académico. Próximamente se integrará con el sistema de niveles y bases de datos.
             </p>
             <div className="mt-6 flex justify-end">
               <Link 

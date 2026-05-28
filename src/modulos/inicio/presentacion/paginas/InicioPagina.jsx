@@ -180,7 +180,7 @@ export default function InicioPagina() {
 
             <div className="flex flex-wrap gap-3 mt-2">
               <Link
-                to="/temas"
+                to="/grados"
                 className="bg-celeste text-negro border-2 border-negro px-4 py-2.5 font-bold text-sm tracking-wide shadow-retro hover:bg-azul-secundario hover:text-white active:translate-x-0.5 active:translate-y-0.5 active:shadow-retro-sm transition-all flex items-center gap-2"
               >
                 <Play className="w-4 h-4 fill-current" />
@@ -280,7 +280,7 @@ export default function InicioPagina() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Link
-                to="/temas"
+                to="/grados"
                 className="group border-2 border-negro p-3 hover:bg-gris-claro transition-all shadow-retro-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center gap-3"
               >
                 <div className="bg-celeste border border-black p-2 group-hover:scale-105 transition-transform">
@@ -297,7 +297,7 @@ export default function InicioPagina() {
               </Link>
 
               <Link
-                to="/materias"
+                to="/grados"
                 className="group border-2 border-negro p-3 hover:bg-gris-claro transition-all shadow-retro-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center gap-3"
               >
                 <div className="bg-white border border-black p-2 group-hover:scale-105 transition-transform">
