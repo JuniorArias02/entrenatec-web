@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
 import usarTemas from '../hooks/usarTemas';
-import usarBloques from '@/modulos/bloques/presentacion/hooks/usarBloques';
+import usarProgreso from '@/modulos/progreso/presentacion/hooks/usarProgreso';
 import RenderizadorBloques from '@/modulos/bloques/presentacion/componentes/RenderizadorBloques';
 import { ArrowLeft, Monitor, BookOpen } from 'lucide-react';
 
@@ -10,20 +10,24 @@ export default function DetalleTemaPagina() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { temaSeleccionado, obtenerTemaPorId, cargando: cargandoTema } = usarTemas();
-  const { bloques, obtenerBloquesPorTema, cargando: cargandoBloques, error } = usarBloques();
+  const { temaSeleccionado, obtenerTemaPorId, cargando, error } = usarTemas();
+  const { marcarTemaCompletado } = usarProgreso();
 
   // Buscar URL de retorno en el estado, o retornar por defecto a grados
   const urlRetorno = location.state?.dePeriodo || '/grados';
 
+  const handleCompletar = async () => {
+    if (temaId) {
+      await marcarTemaCompletado(parseInt(temaId));
+    }
+    navigate(urlRetorno);
+  };
+
   useEffect(() => {
     if (temaId) {
       obtenerTemaPorId(temaId);
-      obtenerBloquesPorTema(temaId);
     }
-  }, [temaId, obtenerTemaPorId, obtenerBloquesPorTema]);
-
-  const cargando = cargandoTema || cargandoBloques;
+  }, [temaId, obtenerTemaPorId]);
 
   if (cargando) {
     return (
@@ -65,10 +69,10 @@ export default function DetalleTemaPagina() {
         <div className="p-5 bg-white border-t border-gray-300">
           <span className="text-[10px] font-bold font-mono text-azul-secundario uppercase">Tema Escolar</span>
           <h1 className="text-2xl md:text-3xl font-extrabold uppercase text-azul-oscuro m-0 mt-0.5">
-            {temaSeleccionado?.nombre || 'Tema de Aprendizaje'}
+            {temaSeleccionado?.titulo || 'Tema de Aprendizaje'}
           </h1>
           <p className="text-xs text-gray-500 font-mono mt-1">
-            Ubicación del archivo: C:\EntrenaTech\Temas\{temaId}.json
+            Ubicación del archivo: C:\EntrenaTec\Temas\{temaId}.json
           </p>
         </div>
       </div>
@@ -76,7 +80,7 @@ export default function DetalleTemaPagina() {
       {/* Sección del Renderizador de Bloques */}
       <div className="bg-white border-2 border-negro shadow-retro p-6">
         <div className="max-w-3xl mx-auto flex flex-col gap-4">
-          <RenderizadorBloques bloques={bloques} />
+          <RenderizadorBloques bloques={temaSeleccionado?.bloques || []} />
         </div>
       </div>
 
@@ -86,7 +90,7 @@ export default function DetalleTemaPagina() {
           ¿Terminaste de estudiar este tema?
         </span>
         <button
-          onClick={() => navigate(urlRetorno)}
+          onClick={handleCompletar}
           className="bg-celeste text-negro border-2 border-negro px-5 py-2 font-bold font-mono text-xs uppercase shadow-retro hover:bg-azul-secundario hover:text-white active:translate-y-0.5 active:shadow-retro-sm transition-all cursor-pointer"
         >
           MARCAR TEMARIO COMPLETADO

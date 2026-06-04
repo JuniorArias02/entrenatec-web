@@ -36,12 +36,13 @@ export default class ApiAutenticacionRepositorio extends AutenticacionRepositori
       throw new Error(resultado.mensaje || 'Credenciales incorrectas o error en el servidor.');
     }
 
-    const { token, tipo_token, expira_en } = resultado.datos;
+    const { token, tipo_token, expira_en, rol } = resultado.datos;
     return new Sesion({
       token,
       tipoToken: tipo_token,
       expiraEn: expira_en,
       guardadoEn: Date.now(),
+      rol,
     });
   }
 
@@ -66,12 +67,13 @@ export default class ApiAutenticacionRepositorio extends AutenticacionRepositori
       throw new Error(resultado.mensaje || 'Error al refrescar el token de sesión.');
     }
 
-    const { token, tipo_token, expira_en } = resultado.datos;
+    const { token, tipo_token, expira_en, rol } = resultado.datos;
     return new Sesion({
       token,
       tipoToken: tipo_token,
       expiraEn: expira_en,
       guardadoEn: Date.now(),
+      rol, // El endpoint de refresh también debería devolverlo, si no, se pierde.
     });
   }
 
@@ -85,6 +87,7 @@ export default class ApiAutenticacionRepositorio extends AutenticacionRepositori
       tipoToken: sesion.tipoToken,
       expiraEn: sesion.expiraEn,
       guardadoEn: sesion.guardadoEn,
+      rol: sesion.rol,
     }));
   }
 

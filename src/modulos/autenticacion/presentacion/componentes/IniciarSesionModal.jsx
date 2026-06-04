@@ -52,7 +52,7 @@ export default function IniciarSesionModal({ alCerrar }) {
               Ingreso al Sistema
             </h2>
             <p className="text-xs text-gray-500 font-mono mt-1">
-              EntrenaTech OS v1.0.0
+              EntrenaTec OS v1.0.0
             </p>
           </div>
 

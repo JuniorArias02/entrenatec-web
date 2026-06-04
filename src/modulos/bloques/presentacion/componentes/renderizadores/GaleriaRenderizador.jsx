@@ -17,7 +17,7 @@ export default function GaleriaRenderizador({ bloque }) {
       <div className="p-4 bg-gray-50 border-t-2 border-negro">
         {descripcion && (
           <p className="text-xs font-mono text-gray-600 mb-3 select-none">
-            Directorio: C:\EntrenaTech\Galeria\ &gt; {descripcion}
+            Directorio: C:\EntrenaTec\Galeria\ &gt; {descripcion}
           </p>
         )}
 

@@ -22,7 +22,7 @@ export default function LandingPagina() {
 
   return (
     <div className="flex flex-col gap-8 py-4 animate-fade-in">
-      {/* 1. HERO BANNER: Presentación del EntrenaTech OS */}
+      {/* 1. HERO BANNER: Presentación del EntrenaTec OS */}
       <div className="w-full bg-white border-2 border-negro shadow-retro p-1">
         <div className="bg-azul-oscuro text-white px-3 py-1.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -95,18 +95,18 @@ export default function LandingPagina() {
         </div>
       </div>
 
-      {/* 2. VENTANA DETALLES: ¿Qué es EntrenaTech? */}
+      {/* 2. VENTANA DETALLES: ¿Qué es EntrenaTec? */}
       <div className="w-full bg-white border-2 border-negro shadow-retro p-1">
         <div className="bg-azul-secundario text-white px-3 py-1 flex items-center justify-between font-bold text-xs uppercase">
-          <span>PROYECTO_ENTRENATECH.TXT</span>
+          <span>PROYECTO_ENTRENATEC.TXT</span>
           <span>[ ] X</span>
         </div>
         <div className="p-6 bg-white border border-t-0 border-gray-300">
           <h2 className="text-2xl font-extrabold uppercase text-azul-oscuro mb-3">
-            ¿Por qué nace EntrenaTech?
+            ¿Por qué nace EntrenaTec?
           </h2>
           <p className="text-gray-700 leading-relaxed font-medium">
-            EntrenaTech es un CMS de aprendizaje dinámico orientado a facilitar la asimilación de conceptos informáticos clave.
+            EntrenaTec es un CMS de aprendizaje dinámico orientado a facilitar la asimilación de conceptos informáticos clave.
             Queremos que la teoría no sea aburrida. Mediante un sistema de bloques estructurados, el estudiante puede visualizar conceptos teóricos,
             ver códigos ejemplo, resolver problemas prácticos en una consola interactiva, y ganar experiencia para avanzar a través del plan de formación técnica.
           </p>
@@ -266,10 +266,10 @@ export default function LandingPagina() {
             <div className="w-3 h-3 bg-red-500 border border-black"></div>
           </div>
           <div className="flex-1 bg-azul-oscuro text-celeste p-5 font-mono text-xs flex flex-col gap-2 min-h-[220px]">
-            <div>EntrenaTech OS MS-DOS [Versión 1.0.0]</div>
-            <div>(C) Copyright EntrenaTech Corp 2026.</div>
+            <div>EntrenaTec OS MS-DOS [Versión 1.0.0]</div>
+            <div>(C) Copyright EntrenaTec Corp 2026.</div>
             <div className="text-gray-400 mt-2">// INICIO DE TERMINAL EN MODO DEMO</div>
-            <div className="text-white mt-1">C:\&gt; entrenatech.exe --grados</div>
+            <div className="text-white mt-1">C:\&gt; entrenatec.exe --grados</div>
             <div className="text-yellow-300">
               [+] Cargando mallas curriculares de 9º, 10º y 11º...
               <br />

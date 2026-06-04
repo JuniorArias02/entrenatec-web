@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react';
-import MemoriaPeriodoRepositorio from '../../infraestructura/persistencia/MemoriaPeriodoRepositorio';
+import ApiPeriodoRepositorio from '../../infraestructura/persistencia/ApiPeriodoRepositorio';
 import ObtenerPeriodosPorGradoCasoUso from '../../aplicacion/acciones/ObtenerPeriodosPorGradoCasoUso';
 import ObtenerPeriodoPorIdCasoUso from '../../aplicacion/acciones/ObtenerPeriodoPorIdCasoUso';
 
 // Instanciar repositorio y casos de uso
-const periodoRepositorio = new MemoriaPeriodoRepositorio();
+const periodoRepositorio = new ApiPeriodoRepositorio();
 const casoObtenerPeriodosPorGrado = new ObtenerPeriodosPorGradoCasoUso(periodoRepositorio);
 const casoObtenerPeriodoPorId = new ObtenerPeriodoPorIdCasoUso(periodoRepositorio);
 

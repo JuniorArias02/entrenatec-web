@@ -1,5 +1,6 @@
 import React from 'react';
 import { FileText, Download } from 'lucide-react';
+import { Alerta } from '@/compartido/utilidades/Alerta';
 
 /**
  * Renderizador para bloques de tipo PDF.
@@ -7,7 +8,7 @@ import { FileText, Download } from 'lucide-react';
 export default function PdfRenderizador({ bloque }) {
   const archivoNombre = bloque.propiedades?.archivoNombre || 'documento_lectura.pdf';
   const tamano = bloque.propiedades?.tamano || '1.0 MB';
-  const url = bloque.propiedades?.url || '#';
+  const url = bloque.contenido || bloque.metadata?.url || bloque.propiedades?.url || '#';
   const descripcion = bloque.contenido || 'Guía teórica de estudio complementario.';
 
   return (
@@ -37,7 +38,7 @@ export default function PdfRenderizador({ bloque }) {
           onClick={(e) => {
             if (url === '#') {
               e.preventDefault();
-              alert(`Simulando descarga de: ${archivoNombre}`);
+              Alerta.info('Descarga_Virtual', `Simulando descarga de: ${archivoNombre}`);
             }
           }}
           className="bg-celeste text-negro border-2 border-negro px-4 py-2 font-bold font-mono text-xs uppercase shadow-retro hover:bg-azul-secundario hover:text-white active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center gap-1.5 text-center cursor-pointer select-none"

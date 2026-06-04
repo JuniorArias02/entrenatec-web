@@ -3,11 +3,12 @@
  * Representa la sesión activa de un usuario en el sistema.
  */
 export default class Sesion {
-  constructor({ token, tipoToken, expiraEn, guardadoEn = Date.now() }) {
+  constructor({ token, tipoToken, expiraEn, guardadoEn = Date.now(), rol = null }) {
     this.token = token;
     this.tipoToken = tipoToken;
     this.expiraEn = expiraEn; // En segundos, ej. 3600
     this.guardadoEn = guardadoEn; // Marca de tiempo en ms
+    this.rol = rol;
   }
 
   /**

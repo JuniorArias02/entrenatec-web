@@ -4,7 +4,7 @@ import React from 'react';
  * Renderizador para bloques de tipo IMAGEN.
  */
 export default function ImagenRenderizador({ bloque }) {
-  const url = bloque.contenido || bloque.propiedades?.url;
+  const url = bloque.contenido || bloque.metadata?.url || bloque.propiedades?.url;
   const leyenda = bloque.propiedades?.leyenda;
 
   return (

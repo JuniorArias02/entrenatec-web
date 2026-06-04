@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import usarInicio from '../hooks/usarInicio';
+import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 import {
   Monitor,
   Terminal as TerminalIcon,
@@ -15,18 +16,25 @@ import {
   Trophy,
   BookOpen,
   Layers,
-  Users
+  Users,
+  Edit3
 } from 'lucide-react';
 import { VERSION_SISTEMA, VERSION_MSDOS, NOMBRE_SISTEMA } from '@/compartido/constantes/version';
+import logomejorado from '@/assets/logomejorado.png';
+import AutorizacionRol from '@/compartido/componentes/AutorizacionRol';
+import { Alerta } from '@/compartido/utilidades/Alerta';
 
 export default function InicioPagina() {
-  const { estadisticas, cargando, error } = usarInicio();
+  const { estadisticas, estadisticasAdmin, cargando, error } = usarInicio();
+  const { sesion } = usarAutenticacion();
+  const rol = sesion?.rol || 'ESTUDIANTE'; // Por defecto lo tratamos como estudiante visualmente si falla
+  
   const [comandoEntrada, setComandoEntrada] = useState('');
   const [logsConsola, setLogsConsola] = useState([
     `${NOMBRE_SISTEMA} MS-DOS [Versión ${VERSION_MSDOS}]`,
-    '(C) Copyright EntrenaTech Corp 2026.',
+    '(C) Copyright EntrenaTec Corp 2026.',
     '',
-    'C:\\> entrenatech.exe --iniciar',
+    'C:\\> entrenatec.exe --iniciar',
     '[+] Cargando base de datos del sistema...',
     '[+] Inicializando interfaz de aprendizaje...',
     '[+] Conexión establecida con el núcleo.',
@@ -105,7 +113,7 @@ export default function InicioPagina() {
           <div className="p-6 flex flex-col items-center gap-4 bg-white border border-t-0 border-gray-300">
             <Monitor className="w-12 h-12 text-azul-secundario animate-bounce" />
             <div className="text-center font-bold text-sm tracking-wide">
-              ENTRENATECH.EXE
+              ENTRENATEC.EXE
             </div>
             <div className="text-xs text-gray-500 font-mono">
               Cargando módulos y variables de entorno...
@@ -149,8 +157,8 @@ export default function InicioPagina() {
     );
   }
 
-  // Porcentaje calculado de la entidad de dominio
-  const avance = estadisticas ? estadisticas.obtenerPorcentajeProgreso() : 0;
+  // Porcentaje recuperado desde el backend
+  const avance = estadisticas?.progreso_general || 0;
 
   return (
     <div className="flex flex-col gap-6">
@@ -161,7 +169,7 @@ export default function InicioPagina() {
           <div className="flex items-center gap-2">
             <Cpu className="w-4 h-4 text-celeste" />
             <span className="font-bold font-mono text-xs uppercase tracking-widest">
-              BIENVENIDO_A_ENTRENATECH.EXE
+              BIENVENIDO_A_ENTRENATEC.EXE
             </span>
           </div>
           <div className="bg-celeste text-negro text-[10px] font-bold px-1.5 border border-negro uppercase select-none">
@@ -187,7 +195,7 @@ export default function InicioPagina() {
                 COMENZAR ENTRENAMIENTO
               </Link>
               <button
-                onClick={() => alert('¡EntrenaTech es un CMS de aprendizaje interactivo!')}
+                onClick={() => Alerta.info('Info.exe', '¡EntrenaTec es un CMS de aprendizaje interactivo!')}
                 className="bg-white text-negro border-2 border-negro px-4 py-2.5 font-bold text-sm tracking-wide shadow-retro hover:bg-gris-claro active:translate-x-0.5 active:translate-y-0.5 active:shadow-retro-sm transition-all flex items-center gap-2 cursor-pointer"
               >
                 <Info className="w-4 h-4" />
@@ -199,74 +207,139 @@ export default function InicioPagina() {
           {/* Gráfico Retro / Imagen */}
           <div className="flex justify-center items-center">
             <div className="w-48 h-48 bg-gris-claro border-2 border-negro relative flex flex-col justify-center items-center shadow-retro-sm p-4 bg-checkerboard">
-              <div className="bg-white border-2 border-black p-3 text-center shadow-retro-sm flex flex-col items-center gap-2">
-                <Monitor className="w-12 h-12 text-azul-secundario" />
-                <span className="font-mono text-xs font-bold text-azul-oscuro">ENTRENA_OS v{VERSION_SISTEMA.split('.')[0]}</span>
-                <span className="font-mono text-[9px] text-green-600 bg-black px-1.5 py-0.5 rounded-xs">OK_SYS_UP</span>
-              </div>
+              <img src={logomejorado} alt="Logo EntrenaTec" className="max-w-full max-h-full object-contain" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Sección del Dashboard: Tarjetas de estadísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Nivel de Progreso */}
-        <div className="bg-celeste border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-2 relative overflow-hidden">
-          <div className="absolute right-2 top-2 opacity-15">
-            <Trophy className="w-12 h-12" />
+      {rol === 'ESTUDIANTE' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Nivel de Progreso */}
+          <div className="bg-celeste border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-2 relative overflow-hidden">
+            <div className="absolute right-2 top-2 opacity-15">
+              <Trophy className="w-12 h-12" />
+            </div>
+            <span className="font-mono text-xs uppercase font-bold text-gray-800">
+              Progreso General
+            </span>
+            <div className="text-3xl font-extrabold font-mono">
+              {avance}%
+            </div>
+            <div className="w-full bg-white border border-black h-3 overflow-hidden mt-1">
+              <div className="bg-azul-secundario h-full border-r border-black" style={{ width: `${avance}%` }}></div>
+            </div>
           </div>
-          <span className="font-mono text-xs uppercase font-bold text-gray-800">
-            Progreso General
-          </span>
-          <div className="text-3xl font-extrabold font-mono">
-            {avance}%
-          </div>
-          <div className="w-full bg-white border border-black h-3 overflow-hidden mt-1">
-            <div className="bg-azul-secundario h-full border-r border-black" style={{ width: `${avance}%` }}></div>
-          </div>
-        </div>
 
-        {/* Nivel de Usuario */}
-        <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
-          <span className="font-mono text-xs uppercase font-bold text-gray-500">
-            Nivel del Estudiante
-          </span>
-          <div className="text-3xl font-extrabold text-azul-secundario">
-            NIVEL {estadisticas?.nivelActual}
+          {/* Nivel de Usuario */}
+          <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
+            <span className="font-mono text-xs uppercase font-bold text-gray-500">
+              Nivel del Estudiante
+            </span>
+            <div className="text-3xl font-extrabold text-azul-secundario">
+              NIVEL {estadisticas?.nivel || 1}
+            </div>
+            <span className="text-xs font-mono text-gray-600">
+              Sigue completando temas para subir de nivel
+            </span>
           </div>
-          <span className="text-xs font-mono text-gray-600">
-            Exp: {estadisticas?.puntosExperiencia} / {estadisticas?.puntosSiguienteNivel} XP
-          </span>
-        </div>
 
-        {/* Temas completados */}
-        <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
-          <span className="font-mono text-xs uppercase font-bold text-gray-500">
-            Temas Completados
-          </span>
-          <div className="text-3xl font-extrabold">
-            {estadisticas?.temasCompletados} / {estadisticas?.temasTotales}
+          {/* Temas completados */}
+          <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
+            <span className="font-mono text-xs uppercase font-bold text-gray-500">
+              Temas Completados
+            </span>
+            <div className="text-3xl font-extrabold">
+              {estadisticas?.temas_completados || 0} / {estadisticas?.temas_totales || 0}
+            </div>
+            <span className="text-xs font-mono text-gray-600">
+              Temas activos de tu plan de estudios
+            </span>
           </div>
-          <span className="text-xs font-mono text-gray-600">
-            Temas activos de tu plan de estudios
-          </span>
-        </div>
 
-        {/* Horas Practicadas */}
-        <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
-          <span className="font-mono text-xs uppercase font-bold text-gray-500">
-            Tiempo de Práctica
-          </span>
-          <div className="text-3xl font-extrabold">
-            {estadisticas?.horasEstudio} Horas
+          {/* Horas Practicadas */}
+          <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
+            <span className="font-mono text-xs uppercase font-bold text-gray-500">
+              Tiempo de Práctica
+            </span>
+            <div className="text-3xl font-extrabold">
+              {estadisticas?.horas_estudio || 0} Horas
+            </div>
+            <span className="text-xs font-mono text-gray-600 font-bold text-green-600 flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5" />
+              ¡Buen ritmo de estudio!
+            </span>
           </div>
-          <span className="text-xs font-mono text-gray-600 font-bold text-green-600 flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5" />
-            ¡Buen ritmo de estudio!
-          </span>
         </div>
-      </div>
+      ) : (
+        /* Dashboard para Profesores/Admin */
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-yellow-100 border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
+            <span className="font-mono text-xs uppercase font-bold text-gray-700">
+              Rol Activo
+            </span>
+            <div className="text-2xl font-extrabold text-azul-oscuro">
+              {rol}
+            </div>
+            <span className="text-xs font-mono text-gray-600">
+              Tienes permisos avanzados.
+            </span>
+          </div>
+          
+          <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
+            <span className="font-mono text-xs uppercase font-bold text-gray-500">
+              Contenido Curricular
+            </span>
+            <div className="text-2xl font-extrabold text-green-600 flex items-baseline gap-2">
+              {estadisticasAdmin?.temas_publicados || 0}
+              <span className="text-sm text-gray-500">/ {estadisticasAdmin?.temas_totales || 0}</span>
+            </div>
+            <span className="text-xs font-mono text-gray-600">
+              Temas publicados en total.
+            </span>
+          </div>
+          
+          <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
+            <span className="font-mono text-xs uppercase font-bold text-gray-500">
+              Estructura
+            </span>
+            <div className="text-2xl font-extrabold text-azul-secundario">
+              {estadisticasAdmin?.grados || 0} Grados
+            </div>
+            <span className="text-xs font-mono text-gray-600">
+              {estadisticasAdmin?.materias || 0} materias registradas.
+            </span>
+          </div>
+
+          {estadisticasAdmin?.usuarios_totales ? (
+            <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
+              <span className="font-mono text-xs uppercase font-bold text-gray-500">
+                Usuarios Totales
+              </span>
+              <div className="text-2xl font-extrabold text-negro flex items-center gap-2">
+                <Users className="w-5 h-5 text-azul-secundario" />
+                {estadisticasAdmin?.usuarios_totales}
+              </div>
+              <span className="text-xs font-mono text-gray-600">
+                {estadisticasAdmin?.estudiantes} Est. | {estadisticasAdmin?.docentes} Doc.
+              </span>
+            </div>
+          ) : (
+            <div className="bg-white border-2 border-negro shadow-retro-sm p-4 flex flex-col gap-1.5 relative">
+              <span className="font-mono text-xs uppercase font-bold text-gray-500">
+                Planificación
+              </span>
+              <div className="text-2xl font-extrabold text-azul-secundario">
+                {estadisticasAdmin?.cuadros_teoricos || 0} Planes
+              </div>
+              <span className="text-xs font-mono text-gray-600">
+                Cuadros teóricos disponibles.
+              </span>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Grid de Secciones y Terminal */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -313,25 +386,48 @@ export default function InicioPagina() {
                 </div>
               </Link>
 
-              <Link
-                to="/usuarios"
-                className="group border-2 border-negro p-3 hover:bg-gris-claro transition-all shadow-retro-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center gap-3"
-              >
-                <div className="bg-white border border-black p-2 group-hover:scale-105 transition-transform">
-                  <Users className="w-6 h-6 text-azul-secundario" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-sm text-azul-oscuro group-hover:underline">
-                    PANEL DE USUARIO
-                  </h3>
-                  <p className="text-xs text-gray-500">
-                    Configuración de perfiles y roles locales.
-                  </p>
-                </div>
-              </Link>
+              {/* Mostrar creación de temas solo si tiene permisos avanzados */}
+              <AutorizacionRol rolesPermitidos={['ADMIN', 'DOCENTE', 'EDITOR']}>
+                <Link
+                  to="/temas/crear"
+                  className="group border-2 border-negro p-3 hover:bg-gris-claro transition-all shadow-retro-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center gap-3"
+                >
+                  <div className="bg-yellow-200 border border-black p-2 group-hover:scale-105 transition-transform">
+                    <Edit3 className="w-6 h-6 text-yellow-800" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm text-azul-oscuro group-hover:underline">
+                      CREADOR DE TEMAS
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Gestiona el contenido (Bloques, Cuadros).
+                    </p>
+                  </div>
+                </Link>
+              </AutorizacionRol>
+
+              {/* Mostrar panel de usuarios solo si es ADMIN */}
+              <AutorizacionRol rolesPermitidos={['ADMIN']}>
+                <Link
+                  to="/usuarios"
+                  className="group border-2 border-negro p-3 hover:bg-gris-claro transition-all shadow-retro-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center gap-3"
+                >
+                  <div className="bg-white border border-black p-2 group-hover:scale-105 transition-transform">
+                    <Users className="w-6 h-6 text-azul-secundario" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-sm text-azul-oscuro group-hover:underline">
+                      PANEL DE USUARIOS
+                    </h3>
+                    <p className="text-xs text-gray-500">
+                      Configuración de perfiles y roles locales.
+                    </p>
+                  </div>
+                </Link>
+              </AutorizacionRol>
 
               <div
-                onClick={() => alert('EntrenaTech es una aplicación educativa de código abierto.')}
+                onClick={() => Alerta.info('Licencia_y_Codigo', 'EntrenaTec es una aplicación educativa de código abierto.')}
                 className="group border-2 border-negro p-3 hover:bg-gris-claro transition-all shadow-retro-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none flex items-center gap-3 cursor-pointer"
               >
                 <div className="bg-green-100 border border-black p-2 group-hover:scale-105 transition-transform">
@@ -342,7 +438,7 @@ export default function InicioPagina() {
                     ACERCA DEL SOFTWARE
                   </h3>
                   <p className="text-xs text-gray-500">
-                    Información sobre EntrenaTech OS.
+                    Información sobre EntrenaTec OS.
                   </p>
                 </div>
               </div>

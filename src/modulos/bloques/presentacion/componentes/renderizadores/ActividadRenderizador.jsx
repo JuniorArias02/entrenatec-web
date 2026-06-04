@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Award, CheckCircle } from 'lucide-react';
+import { Alerta } from '@/compartido/utilidades/Alerta';
 
 /**
  * Renderizador para bloques de tipo ACTIVIDAD.
@@ -13,7 +14,7 @@ export default function ActividadRenderizador({ bloque }) {
   const manejarEntrega = (e) => {
     e.preventDefault();
     if (!respuesta.trim()) {
-      alert('Por favor, escribe una respuesta antes de entregar.');
+      Alerta.advertencia('Atencion.exe', 'Por favor, escribe una respuesta antes de entregar.');
       return;
     }
     setEntregado(true);

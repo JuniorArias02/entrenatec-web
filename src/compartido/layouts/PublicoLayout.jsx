@@ -103,8 +103,8 @@ export default function PublicoLayout() {
 
       {/* Footer público */}
       <footer className="bg-azul-oscuro text-gray-400 text-center py-4 border-t-4 border-negro font-mono text-xs z-10">
-        <p>© 2026 Proyecto EntrenaTech. Diseñado para potenciar el aprendizaje técnico escolar.</p>
-        <p className="text-[10px] text-gray-600 mt-1">EntrenaTech OS v{VERSION_SISTEMA} - Grados 9º, 10º y 11º</p>
+        <p>© 2026 Proyecto EntrenaTec. Diseñado para potenciar el aprendizaje técnico escolar.</p>
+        <p className="text-[10px] text-gray-600 mt-1">EntrenaTec OS v{VERSION_SISTEMA} - Grados 9º, 10º y 11º</p>
       </footer>
 
       {/* Modal de Inicio de Sesión */}

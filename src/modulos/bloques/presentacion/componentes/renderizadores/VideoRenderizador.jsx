@@ -9,6 +9,16 @@ export default function VideoRenderizador({ bloque }) {
   const [reproduciendo, setReproduciendo] = useState(false);
   const url = bloque.propiedades?.url || bloque.contenido;
   const titulo = bloque.propiedades?.titulo || 'Video de Aprendizaje';
+  const esYoutube = bloque.metadata?.plataforma === 'youtube' || (url && url.includes('youtube.com'));
+  
+  // Convertir URL de YouTube a URL embebida
+  let youtubeEmbedUrl = url;
+  if (esYoutube && url) {
+    const videoIdMatch = url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
+    if (videoIdMatch && videoIdMatch[1]) {
+      youtubeEmbedUrl = `https://www.youtube.com/embed/${videoIdMatch[1]}`;
+    }
+  }
 
   const alternarReproduccion = () => {
     if (videoRef.current) {
@@ -39,13 +49,23 @@ export default function VideoRenderizador({ bloque }) {
 
       <div className="relative bg-black border-b-2 border-negro overflow-hidden flex items-center justify-center min-h-[180px] max-h-[360px]">
         {url ? (
-          <video 
-            ref={videoRef}
-            src={url}
-            className="w-full h-full max-h-[360px]"
-            onClick={alternarReproduccion}
-            onEnded={() => setReproduciendo(false)}
-          />
+          esYoutube ? (
+            <iframe
+              src={youtubeEmbedUrl}
+              title={titulo}
+              className="w-full h-full max-h-[360px] aspect-video border-none"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          ) : (
+            <video 
+              ref={videoRef}
+              src={url}
+              className="w-full h-full max-h-[360px]"
+              onClick={alternarReproduccion}
+              onEnded={() => setReproduciendo(false)}
+            />
+          )
         ) : (
           <div className="text-gray-500 font-mono text-xs">Sin archivo de video disponible</div>
         )}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { HelpCircle, AlertCircle, CheckCircle, XCircle } from 'lucide-react';
+import { Alerta } from '@/compartido/utilidades/Alerta';
 
 /**
  * Renderizador para bloques de tipo QUIZ.
@@ -18,7 +19,7 @@ export default function QuizRenderizador({ bloque }) {
   const manejarValidar = (e) => {
     e.preventDefault();
     if (opcionSeleccionada === null) {
-      alert('Por favor, selecciona una opción antes de responder.');
+      Alerta.advertencia('Atencion.exe', 'Por favor, selecciona una opción antes de responder.');
       return;
     }
     setValidado(true);

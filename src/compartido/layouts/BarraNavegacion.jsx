@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Monitor, HelpCircle, HardDrive, Terminal } from 'lucide-react';
+import { Monitor, HardDrive, Terminal, Menu } from 'lucide-react';
 import { NOMBRE_SISTEMA, VERSION_SISTEMA } from '@/compartido/constantes/version';
 
-export default function BarraNavegacion() {
+export default function BarraNavegacion({ toggleMenu }) {
   const location = useLocation();
-  const [rutaSimulada, setRutaSimulada] = useState('C:\\EntrenaTech\\Inicio');
+  const [rutaSimulada, setRutaSimulada] = useState('C:\\EntrenaTec\\Inicio');
   const [hora, setHora] = useState('');
 
   // Actualizar la ruta simulada según el path real
   useEffect(() => {
     const path = location.pathname;
     if (path === '/') {
-      setRutaSimulada('C:\\EntrenaTech\\Inicio');
+      setRutaSimulada('C:\\EntrenaTec\\Inicio');
     } else {
       const formateado = path
         .split('/')
         .filter(Boolean)
         .map(segmento => segmento.charAt(0).toUpperCase() + segmento.slice(1))
         .join('\\');
-      setRutaSimulada(`C:\\EntrenaTech\\${formateado || 'Inicio'}`);
+      setRutaSimulada(`C:\\EntrenaTec\\${formateado || 'Inicio'}`);
     }
   }, [location]);
 
@@ -50,13 +50,19 @@ export default function BarraNavegacion() {
         
         {/* Controles de Ventana retro */}
         <div className="flex items-center gap-1.5">
-          <button className="w-5 h-5 bg-gris-claro text-negro border-2 border-white border-r-gray-500 border-b-gray-500 flex items-center justify-center text-xs font-bold font-mono shadow-[1px_1px_0px_0px_#000000] active:translate-y-0.5 active:shadow-none cursor-pointer">
+          <button 
+            onClick={toggleMenu}
+            className="md:hidden w-6 h-6 bg-gris-claro text-negro border-2 border-white border-r-gray-500 border-b-gray-500 flex items-center justify-center font-bold font-mono shadow-[1px_1px_0px_0px_#000000] active:translate-y-0.5 active:shadow-none cursor-pointer"
+          >
+            <Menu className="w-4 h-4" />
+          </button>
+          <button className="hidden md:flex w-5 h-5 bg-gris-claro text-negro border-2 border-white border-r-gray-500 border-b-gray-500 items-center justify-center text-xs font-bold font-mono shadow-[1px_1px_0px_0px_#000000] active:translate-y-0.5 active:shadow-none cursor-pointer">
             _
           </button>
-          <button className="w-5 h-5 bg-gris-claro text-negro border-2 border-white border-r-gray-500 border-b-gray-500 flex items-center justify-center text-[10px] font-bold font-mono shadow-[1px_1px_0px_0px_#000000] active:translate-y-0.5 active:shadow-none cursor-pointer">
+          <button className="hidden md:flex w-5 h-5 bg-gris-claro text-negro border-2 border-white border-r-gray-500 border-b-gray-500 items-center justify-center text-[10px] font-bold font-mono shadow-[1px_1px_0px_0px_#000000] active:translate-y-0.5 active:shadow-none cursor-pointer">
             [ ]
           </button>
-          <button className="w-5 h-5 bg-red-500 text-white border-2 border-red-300 border-r-red-800 border-b-red-800 flex items-center justify-center text-xs font-bold font-mono shadow-[1px_1px_0px_0px_#000000] active:translate-y-0.5 active:shadow-none cursor-pointer">
+          <button className="hidden md:flex w-5 h-5 bg-red-500 text-white border-2 border-red-300 border-r-red-800 border-b-red-800 items-center justify-center text-xs font-bold font-mono shadow-[1px_1px_0px_0px_#000000] active:translate-y-0.5 active:shadow-none cursor-pointer">
             X
           </button>
         </div>
@@ -69,9 +75,9 @@ export default function BarraNavegacion() {
           <div className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
             <span className="text-celeste">A</span>rchivo
           </div>
-          <div className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
-            <span className="text-celeste">E</span>dición
-          </div>
+          <Link to="/temas/crear" className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
+            <span className="text-celeste">N</span>uevo Tema
+          </Link>
           <div className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
             <span className="text-celeste">V</span>er
           </div>

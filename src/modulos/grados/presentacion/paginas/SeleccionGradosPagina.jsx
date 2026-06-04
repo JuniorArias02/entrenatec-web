@@ -63,7 +63,7 @@ export default function SeleccionGradosPagina() {
               className="bg-white border-2 border-negro shadow-retro flex flex-col justify-between hover:bg-gray-50 hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-retro-sm transition-all p-1"
             >
               <div className="bg-azul-secundario text-white px-3 py-1 flex items-center justify-between font-mono text-[10px] uppercase font-bold border-b border-black">
-                <span>SECCIÓN_GRADO_{grado.id.toUpperCase()}</span>
+                <span>SECCIÓN_{String(grado.nombre).toUpperCase().replace(/\s+/g, '_')}</span>
                 <span>[ ] X</span>
               </div>
               
@@ -76,9 +76,6 @@ export default function SeleccionGradosPagina() {
                   <h3 className="text-xl font-bold uppercase text-azul-oscuro mb-1">
                     {grado.nombre}
                   </h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    {grado.descripcion}
-                  </p>
                 </div>
               </div>
 

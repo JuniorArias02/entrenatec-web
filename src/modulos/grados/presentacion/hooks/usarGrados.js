@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react';
-import MemoriaGradoRepositorio from '../../infraestructura/persistencia/MemoriaGradoRepositorio';
+import ApiGradoRepositorio from '../../infraestructura/persistencia/ApiGradoRepositorio';
 import ObtenerGradosCasoUso from '../../aplicacion/acciones/ObtenerGradosCasoUso';
 import ObtenerGradoPorIdCasoUso from '../../aplicacion/acciones/ObtenerGradoPorIdCasoUso';
 
 // Instanciar repositorio y casos de uso como singletons locales
-const gradoRepositorio = new MemoriaGradoRepositorio();
+const gradoRepositorio = new ApiGradoRepositorio();
 const casoObtenerGrados = new ObtenerGradosCasoUso(gradoRepositorio);
 const casoObtenerGradoPorId = new ObtenerGradoPorIdCasoUso(gradoRepositorio);
 

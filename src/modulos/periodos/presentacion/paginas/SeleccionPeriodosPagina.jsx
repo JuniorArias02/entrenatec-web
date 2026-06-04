@@ -103,7 +103,7 @@ export default function SeleccionPeriodosPagina() {
 
               <div className="p-3 border-t border-gray-200 bg-gray-50 flex justify-end">
                 <button
-                  onClick={() => navigate(`/grados/${gradoId}/periodos/${periodo.id}`)}
+                  onClick={() => navigate(`/grados/${gradoId}/periodos/${periodo.id}`, { state: { periodoNombre: periodo.nombre } })}
                   className="bg-celeste text-negro border-2 border-negro px-4 py-1.5 font-bold font-mono text-xs uppercase shadow-retro-sm hover:bg-azul-secundario hover:text-white active:translate-y-0.5 active:shadow-none transition-all flex items-center gap-1 cursor-pointer"
                 >
                   VER CONTENIDOS

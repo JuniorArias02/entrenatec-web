@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react';
-import MemoriaTemaRepositorio from '../../infraestructura/persistencia/MemoriaTemaRepositorio';
+import ApiTemaRepositorio from '../../infraestructura/persistencia/ApiTemaRepositorio';
 import ObtenerTemasPorPeriodoCasoUso from '../../aplicacion/acciones/ObtenerTemasPorPeriodoCasoUso';
 import ObtenerTemaPorIdCasoUso from '../../aplicacion/acciones/ObtenerTemaPorIdCasoUso';
 
 // Instanciar repositorio y casos de uso
-const temaRepositorio = new MemoriaTemaRepositorio();
+const temaRepositorio = new ApiTemaRepositorio();
 const casoObtenerTemasPorPeriodo = new ObtenerTemasPorPeriodoCasoUso(temaRepositorio);
 const casoObtenerTemaPorId = new ObtenerTemaPorIdCasoUso(temaRepositorio);
 
