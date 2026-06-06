@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import BarraNavegacion from './BarraNavegacion';
 import BarraLateral from './BarraLateral';
+import AvisoBetaGlobal from '../componentes/AvisoBetaGlobal';
 
 export default function LayoutPrincipal() {
   const [menuMovilAbierto, setMenuMovilAbierto] = useState(false);
@@ -26,6 +27,9 @@ export default function LayoutPrincipal() {
           </div>
         </main>
       </div>
+
+      {/* Cuadro molesto de Beta */}
+      <AvisoBetaGlobal />
     </div>
   );
 }

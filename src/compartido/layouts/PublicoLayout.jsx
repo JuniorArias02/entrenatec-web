@@ -3,6 +3,7 @@ import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { Monitor, Key, Terminal, HelpCircle } from 'lucide-react';
 import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 import IniciarSesionModal from '@/modulos/autenticacion/presentacion/componentes/IniciarSesionModal';
+import AvisoBetaGlobal from '@/compartido/componentes/AvisoBetaGlobal';
 import { NOMBRE_SISTEMA, VERSION_SISTEMA } from '@/compartido/constantes/version';
 
 export default function PublicoLayout() {
@@ -111,6 +112,9 @@ export default function PublicoLayout() {
       {mostrarLogin && (
         <IniciarSesionModal alCerrar={() => setMostrarLogin(false)} />
       )}
+
+      {/* Cuadro molesto de Beta */}
+      <AvisoBetaGlobal />
     </div>
   );
 }
