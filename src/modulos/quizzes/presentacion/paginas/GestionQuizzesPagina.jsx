@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, HelpCircle, Plus, Trash2, Save, BookOpen } from 'lucide-react';
 import usarGestorQuizzes from '../hooks/usarGestorQuizzes';
 import { Alerta } from '@/compartido/utilidades/Alerta';
+import GestorPreguntas from '../componentes/GestorPreguntas';
 
 export default function GestionQuizzesPagina() {
   const { quizzes, cargando, error, opciones, cargarQuizzes, crearQuiz, cargarOpciones } = usarGestorQuizzes();
-  const [vista, setVista] = useState('lista'); // 'lista' o 'crear'
+  const [vista, setVista] = useState('lista'); // 'lista', 'crear', o 'gestionar_preguntas'
+  const [quizSeleccionado, setQuizSeleccionado] = useState(null);
+
+  // Calcular puntaje total del formulario
+  const [sumaPuntajes, setSumaPuntajes] = useState(0);
 
   // Estado del formulario de creación
   const [quizForm, setQuizForm] = useState({
@@ -31,6 +36,12 @@ export default function GestionQuizzesPagina() {
   useEffect(() => {
     cargarOpciones();
   }, [cargarOpciones]);
+
+  // Recalcular suma de puntajes cada vez que cambien las preguntas
+  useEffect(() => {
+    const total = quizForm.preguntas.reduce((sum, p) => sum + parseInt(p.puntaje || 0), 0);
+    setSumaPuntajes(total);
+  }, [quizForm.preguntas]);
 
   const agregarPregunta = () => {
     setQuizForm(prev => ({
@@ -141,7 +152,7 @@ export default function GestionQuizzesPagina() {
               {vista === 'lista' ? 'Quizzes y Evaluaciones' : 'Creador de Quizzes'}
             </h1>
             <p className="text-sm text-gray-600 mt-2 font-medium">
-              {vista === 'lista' ? 'Administra los exámenes y pruebas del sistema.' : 'Diseña pruebas interactivas con validación inmediata.'}
+              {vista === 'lista' ? 'Administra los exámenes y pruebas del sistema.' : vista === 'crear' ? 'Diseña pruebas interactivas con validación inmediata.' : 'Gestiona las preguntas de un quiz existente.'}
             </p>
           </div>
           {vista === 'lista' && (
@@ -182,6 +193,7 @@ export default function GestionQuizzesPagina() {
                       <th className="p-3 border-r border-negro text-center">Tipo</th>
                       <th className="p-3 border-r border-negro text-center">Aprobación</th>
                       <th className="p-3 border-r border-negro text-center">Estado</th>
+                      <th className="p-3 text-center">Acciones</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y-2 divide-negro">
@@ -197,6 +209,17 @@ export default function GestionQuizzesPagina() {
                             {q.estado}
                           </span>
                         </td>
+                        <td className="p-3 text-center">
+                          <button 
+                            onClick={() => {
+                              setQuizSeleccionado(q.id);
+                              setVista('gestionar_preguntas');
+                            }}
+                            className="bg-yellow-100 text-yellow-900 border-2 border-yellow-600 px-3 py-1 font-bold font-mono text-[10px] uppercase shadow-retro-sm hover:bg-yellow-500 hover:text-white active:translate-y-0.5 active:shadow-none cursor-pointer"
+                          >
+                            Preguntas
+                          </button>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -204,7 +227,7 @@ export default function GestionQuizzesPagina() {
               </div>
             )}
           </div>
-        ) : (
+        ) : vista === 'crear' ? (
           <div className="flex flex-col gap-6">
             {/* Formulario de Configuración Básica */}
             <div className="bg-gray-50 border-2 border-negro p-4">
@@ -405,19 +428,36 @@ export default function GestionQuizzesPagina() {
               </div>
             </div>
 
-            {/* Acción Final */}
-            <div className="pt-4 border-t-2 border-negro flex justify-end">
+            {/* Acción Final y Validador de Puntaje */}
+            <div className="mt-6 flex flex-col md:flex-row justify-between items-center bg-gray-50 border-2 border-negro p-4">
+              <div className="flex items-center gap-4 mb-4 md:mb-0">
+                <span className="font-mono font-bold text-sm uppercase text-gray-700">Total Puntos:</span>
+                <span className={`text-xl font-extrabold font-mono px-3 py-1 border-2 ${sumaPuntajes === 100 ? 'bg-green-100 text-green-800 border-green-600' : 'bg-red-100 text-red-800 border-red-600'}`}>
+                  {sumaPuntajes} / 100
+                </span>
+                {sumaPuntajes !== 100 && (
+                  <span className="text-xs font-bold text-red-600 uppercase">La suma debe ser 100</span>
+                )}
+              </div>
               <button 
                 onClick={guardarQuiz}
-                disabled={cargando || !quizForm.titulo || quizForm.preguntas.length === 0}
-                className={`bg-green-600 text-white border-2 border-negro px-8 py-3 font-bold font-mono text-sm uppercase shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:bg-green-500 hover:-translate-y-0.5 active:translate-y-1 active:shadow-none transition-all flex items-center gap-2 cursor-pointer ${cargando ? 'opacity-50 cursor-not-allowed' : ''}`}
+                disabled={cargando || !quizForm.titulo || quizForm.preguntas.length === 0 || sumaPuntajes !== 100}
+                className={`bg-green-600 text-white border-2 border-negro px-8 py-3 font-bold font-mono text-sm uppercase shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all flex items-center gap-2 cursor-pointer ${cargando || sumaPuntajes !== 100 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-green-500 hover:-translate-y-0.5 active:translate-y-1 active:shadow-none'}`}
               >
                 <Save className="w-5 h-5" />
                 {cargando ? 'Guardando...' : 'Guardar y Publicar Quiz'}
               </button>
             </div>
           </div>
-        )}
+        ) : vista === 'gestionar_preguntas' && quizSeleccionado ? (
+          <GestorPreguntas 
+            quizId={quizSeleccionado} 
+            onVolver={() => {
+              setVista('lista');
+              setQuizSeleccionado(null);
+            }} 
+          />
+        ) : null}
       </div>
     </div>
   );

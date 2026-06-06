@@ -4,6 +4,7 @@ import LayoutPrincipal from '../layouts/LayoutPrincipal';
 import PublicoLayout from '../layouts/PublicoLayout';
 import InicioPagina from '@/modulos/inicio/presentacion/paginas/InicioPagina';
 import LandingPagina from '@/modulos/autenticacion/presentacion/paginas/LandingPagina';
+import ConocerMasPagina from '@/modulos/autenticacion/presentacion/paginas/ConocerMasPagina';
 import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 
 // Páginas de los Módulos Curriculares
@@ -14,6 +15,11 @@ import DetalleTemaPagina from '@/modulos/temas/presentacion/paginas/DetalleTemaP
 import CrearTemaPagina from '@/modulos/temas/presentacion/paginas/CrearTemaPagina';
 import GestionUsuariosPagina from '@/modulos/usuarios/presentacion/paginas/GestionUsuariosPagina';
 import GestionQuizzesPagina from '@/modulos/quizzes/presentacion/paginas/GestionQuizzesPagina';
+import RealizarQuizPagina from '@/modulos/quizzes/presentacion/paginas/RealizarQuizPagina';
+import ListadoQuizzesEstudiante from '@/modulos/quizzes/presentacion/paginas/ListadoQuizzesEstudiante';
+import GestionSopaLetrasPagina from '@/modulos/juegos/presentacion/paginas/GestionSopaLetrasPagina';
+import JugarSopaLetrasPagina from '@/modulos/juegos/presentacion/paginas/JugarSopaLetrasPagina';
+import ListadoJuegosEstudiante from '@/modulos/juegos/presentacion/paginas/ListadoJuegosEstudiante';
 
 /**
  * Guard para proteger rutas que requieren autenticación.
@@ -74,9 +80,14 @@ function RutaPublica({ children }) {
 export default function AppRutas() {
   return (
     <Routes>
-      {/* Grupo de rutas públicas (Landing Page, etc.) */}
+      {/* Landing Page (Solo para no logueados, redirige si ya hay sesión) */}
       <Route element={<RutaPublica><PublicoLayout /></RutaPublica>}>
         <Route path="/" element={<LandingPagina />} />
+      </Route>
+
+      {/* Rutas mixtas (Accesibles por cualquier persona, logueada o no) */}
+      <Route element={<PublicoLayout />}>
+        <Route path="/conocer-mas" element={<ConocerMasPagina />} />
       </Route>
       
       {/* Layout Principal que envuelve todas las vistas internas protegidas */}
@@ -114,6 +125,19 @@ export default function AppRutas() {
             <GestionQuizzesPagina />
           </RutaProtegida>
         } />
+
+        {/* Ruta para el Creador de Sopa de Letras (DOCENTES y ADMIN) */}
+        <Route path="/juegos/sopa-letras/crear" element={
+          <RutaProtegida rolesPermitidos={['ADMIN', 'DOCENTE', 'EDITOR']}>
+            <GestionSopaLetrasPagina />
+          </RutaProtegida>
+        } />
+
+        {/* Rutas para tomar Quizzes y Juegos (Cualquier rol logueado) */}
+        <Route path="/evaluaciones" element={<ListadoQuizzesEstudiante />} />
+        <Route path="/quizzes/:quizId/realizar" element={<RealizarQuizPagina />} />
+        <Route path="/juegos" element={<ListadoJuegosEstudiante />} />
+        <Route path="/juegos/sopa-letras/:id/jugar" element={<JugarSopaLetrasPagina />} />
       </Route>
 
       {/* Captura de rutas no existentes (404) */}

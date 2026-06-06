@@ -100,7 +100,7 @@ export default function GestionUsuariosPagina() {
   }
 
   return (
-    <div className="flex flex-col gap-6 max-w-6xl mx-auto py-6">
+    <div className="flex flex-col gap-6 w-7xl mx-auto py-6">
       <div className="bg-white border-2 border-negro shadow-retro p-1">
         <div className="bg-azul-oscuro text-white px-3 py-1.5 flex items-center justify-between border-b-2 border-negro">
           <div className="flex items-center gap-2">

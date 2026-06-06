@@ -11,7 +11,8 @@ import {
   LogOut,
   Edit3,
   Menu,
-  HelpCircle
+  HelpCircle,
+  Gamepad2
 } from 'lucide-react';
 import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 
@@ -54,7 +55,9 @@ export default function BarraLateral({ menuMovilAbierto, setMenuMovilAbierto }) 
     { nombre: 'Inicio', ruta: '/inicio', icono: Home, roles: ['ESTUDIANTE', 'DOCENTE', 'EDITOR', 'ADMIN'] },
     { nombre: 'Plan Curricular', ruta: '/grados', icono: BookOpen, roles: ['ESTUDIANTE', 'DOCENTE', 'EDITOR', 'ADMIN'] },
     { nombre: 'Creador de Temas', ruta: '/temas/crear', icono: Edit3, roles: ['DOCENTE', 'EDITOR', 'ADMIN'] },
-    { nombre: 'Creador de Quizzes', ruta: '/quizzes', icono: HelpCircle, roles: ['DOCENTE', 'EDITOR', 'ADMIN'] },
+    { nombre: 'Gestión de Quizzes', ruta: '/quizzes', icono: HelpCircle, roles: ['DOCENTE', 'EDITOR', 'ADMIN'] },
+    { nombre: 'Mis Juegos', ruta: '/juegos', icono: Gamepad2, roles: ['ESTUDIANTE', 'DOCENTE', 'EDITOR', 'ADMIN'] },
+    { nombre: 'Mis Evaluaciones', ruta: '/evaluaciones', icono: Layers, roles: ['ESTUDIANTE', 'DOCENTE', 'EDITOR', 'ADMIN'] },
     { nombre: 'Gestión de Usuarios', ruta: '/usuarios', icono: Users, roles: ['ADMIN'] },
   ];
 

@@ -34,12 +34,87 @@ export default function usarGestorQuizzes() {
     }
   }, []);
 
+  const cargarQuizCompleto = useCallback(async (id) => {
+    setCargando(true);
+    setError(null);
+    try {
+      const resultado = await clienteHttp.get(`/quizzes/${id}`);
+      if (resultado.error) throw new Error(resultado.mensaje || 'Error al cargar el quiz');
+      return resultado.datos;
+    } catch (e) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
   const crearQuiz = useCallback(async (datosQuiz) => {
     setCargando(true);
     setError(null);
     try {
       const resultado = await clienteHttp.post('/quizzes', datosQuiz);
       if (resultado.error) throw new Error(resultado.mensaje || 'Error al crear quiz');
+      return resultado.datos;
+    } catch (e) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
+  const agregarPreguntaAQuiz = useCallback(async (quizId, datosPregunta) => {
+    setCargando(true);
+    setError(null);
+    try {
+      const resultado = await clienteHttp.post(`/quizzes/${quizId}/preguntas`, datosPregunta);
+      if (resultado.error) throw new Error(resultado.mensaje || 'Error al agregar pregunta');
+      return resultado.datos;
+    } catch (e) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
+  const actualizarPregunta = useCallback(async (preguntaId, datosPregunta) => {
+    setCargando(true);
+    setError(null);
+    try {
+      const resultado = await clienteHttp.put(`/preguntas/${preguntaId}`, datosPregunta);
+      if (resultado.error) throw new Error(resultado.mensaje || 'Error al actualizar pregunta');
+      return resultado.datos;
+    } catch (e) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
+  const eliminarPregunta = useCallback(async (preguntaId) => {
+    setCargando(true);
+    setError(null);
+    try {
+      const resultado = await clienteHttp.delete(`/preguntas/${preguntaId}`);
+      if (resultado.error) throw new Error(resultado.mensaje || 'Error al eliminar pregunta');
+      return true;
+    } catch (e) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
+  const evaluarQuiz = useCallback(async (quizId, respuestas) => {
+    setCargando(true);
+    setError(null);
+    try {
+      const resultado = await clienteHttp.post(`/quizzes/${quizId}/evaluar`, { respuestas });
+      if (resultado.error) throw new Error(resultado.mensaje || 'Error al evaluar quiz');
       return resultado.datos;
     } catch (e) {
       setError(e.message);
@@ -75,7 +150,12 @@ export default function usarGestorQuizzes() {
     error,
     opciones,
     cargarQuizzes,
+    cargarQuizCompleto,
     crearQuiz,
+    agregarPreguntaAQuiz,
+    actualizarPregunta,
+    eliminarPregunta,
+    evaluarQuiz,
     cargarOpciones
   };
 }

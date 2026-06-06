@@ -194,13 +194,13 @@ export default function InicioPagina() {
                 <Play className="w-4 h-4 fill-current" />
                 COMENZAR ENTRENAMIENTO
               </Link>
-              <button
-                onClick={() => Alerta.info('Info.exe', '¡EntrenaTec es un CMS de aprendizaje interactivo!')}
+              <Link
+                to="/conocer-mas"
                 className="bg-white text-negro border-2 border-negro px-4 py-2.5 font-bold text-sm tracking-wide shadow-retro hover:bg-gris-claro active:translate-x-0.5 active:translate-y-0.5 active:shadow-retro-sm transition-all flex items-center gap-2 cursor-pointer"
               >
                 <Info className="w-4 h-4" />
                 CONOCER MÁS
-              </button>
+              </Link>
             </div>
           </div>
 
