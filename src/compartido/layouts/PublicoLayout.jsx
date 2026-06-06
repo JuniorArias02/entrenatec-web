@@ -88,8 +88,6 @@ export default function PublicoLayout() {
 
           <div className="flex items-center gap-2 bg-gray-800 border border-gray-600 px-3 py-0.5 font-mono text-[10px] text-celeste shadow-[inset_1px_1px_0px_0px_#000000] rounded-sm">
             <Terminal className="w-3 h-3" />
-            <span>ACCESO_PUBLICO.SYS</span>
-            <span className="border-l border-gray-600 h-2.5 mx-1"></span>
             <span>{hora}</span>
           </div>
         </div>

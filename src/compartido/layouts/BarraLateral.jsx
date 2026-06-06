@@ -131,7 +131,7 @@ export default function BarraLateral({ menuMovilAbierto, setMenuMovilAbierto }) 
         </div>
 
       {/* Lista de Enlaces */}
-      <nav className={`flex-1 p-4 flex flex-col gap-3 bg-gray-50 ${colapsada ? 'items-center px-2' : ''}`}>
+      <nav className={`flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-50 ${colapsada ? 'items-center px-2' : ''}`}>
         {enlaces
           .filter(enlace => !enlace.roles || enlace.roles.includes(sesion?.rol || 'ESTUDIANTE'))
           .map((enlace) => {

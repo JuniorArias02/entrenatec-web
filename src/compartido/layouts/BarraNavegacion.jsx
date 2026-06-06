@@ -97,13 +97,9 @@ export default function BarraNavegacion({ toggleMenu }) {
           </span>
         </div>
 
-        {/* Reloj y Estado */}
-        <div className="flex items-center gap-3 bg-gray-800 border border-gray-600 px-3 py-1 font-mono text-xs text-celeste shadow-[inset_1px_1px_0px_0px_#000000] rounded-sm justify-between md:justify-start">
-          <div className="flex items-center gap-1">
-            <Terminal className="w-3.5 h-3.5" />
-            <span>ESTADO: ONLINE</span>
-          </div>
-          <span className="border-l border-gray-600 h-3 mx-1 hidden md:inline"></span>
+        {/* Reloj */}
+        <div className="flex items-center gap-2 bg-gray-800 border border-gray-600 px-3 py-1 font-mono text-xs text-celeste shadow-[inset_1px_1px_0px_0px_#000000] rounded-sm justify-between md:justify-start">
+          <Terminal className="w-3.5 h-3.5" />
           <span>{hora}</span>
         </div>
       </div>
