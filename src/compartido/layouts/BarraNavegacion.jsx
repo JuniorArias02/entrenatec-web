@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Monitor, HardDrive, Terminal, Menu } from 'lucide-react';
 import { NOMBRE_SISTEMA, VERSION_SISTEMA } from '@/compartido/constantes/version';
+import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 
 export default function BarraNavegacion({ toggleMenu }) {
   const location = useLocation();
+  const { sesion } = usarAutenticacion();
   const [rutaSimulada, setRutaSimulada] = useState('C:\\EntrenaTec\\Inicio');
   const [hora, setHora] = useState('');
 
@@ -72,18 +74,34 @@ export default function BarraNavegacion({ toggleMenu }) {
       <div className="flex flex-col md:flex-row md:items-center justify-between p-2 gap-2 bg-azul-oscuro">
         {/* Menú de Opciones */}
         <div className="flex items-center gap-4 text-sm font-semibold pl-1">
-          <div className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
+          <Link to="/grados" className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
             <span className="text-celeste">A</span>rchivo
-          </div>
-          <Link to="/temas/crear" className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
-            <span className="text-celeste">N</span>uevo Tema
           </Link>
-          <div className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
+          
+          {/* Solo mostrar Nuevo Tema si es docente o administrador */}
+          {sesion?.rol && ['ADMIN', 'DOCENTE', 'EDITOR'].includes(sesion.rol) && (
+            <Link to="/temas/crear" className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
+              <span className="text-celeste">N</span>uevo Tema
+            </Link>
+          )}
+          <div 
+            onClick={() => {
+              if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+              } else {
+                if (document.exitFullscreen) {
+                  document.exitFullscreen().catch(() => {});
+                }
+              }
+            }}
+            className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white"
+            title="Alternar Pantalla Completa"
+          >
             <span className="text-celeste">V</span>er
           </div>
-          <div className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
+          <Link to="/ayuda" className="relative group cursor-pointer hover:bg-azul-secundario px-2 py-0.5 border border-transparent hover:border-white">
             <span className="text-celeste">A</span>yuda
-          </div>
+          </Link>
         </div>
 
         {/* Dirección Simulada (Address Bar) */}

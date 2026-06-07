@@ -20,6 +20,7 @@ import ListadoQuizzesEstudiante from '@/modulos/quizzes/presentacion/paginas/Lis
 import GestionSopaLetrasPagina from '@/modulos/juegos/presentacion/paginas/GestionSopaLetrasPagina';
 import JugarSopaLetrasPagina from '@/modulos/juegos/presentacion/paginas/JugarSopaLetrasPagina';
 import ListadoJuegosEstudiante from '@/modulos/juegos/presentacion/paginas/ListadoJuegosEstudiante';
+import AyudaPagina from '@/modulos/ayuda/presentacion/paginas/AyudaPagina';
 
 /**
  * Guard para proteger rutas que requieren autenticación.
@@ -94,6 +95,7 @@ export default function AppRutas() {
       <Route element={<RutaProtegida><LayoutPrincipal /></RutaProtegida>}>
         {/* Página de Inicio / Dashboard (Accesible por todos los roles) */}
         <Route path="/inicio" element={<InicioPagina />} />
+        <Route path="/ayuda" element={<AyudaPagina />} />
         
         {/* Módulos Curriculares (Exploración para Estudiantes y vista general) */}
         <Route path="/grados" element={<SeleccionGradosPagina />} />
