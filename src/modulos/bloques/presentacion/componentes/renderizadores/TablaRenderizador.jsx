@@ -4,8 +4,8 @@ import React from 'react';
  * Renderizador para bloques de tipo TABLA.
  */
 export default function TablaRenderizador({ bloque }) {
-  const cabeceras = bloque.propiedades?.cabeceras || [];
-  const filas = bloque.propiedades?.filas || [];
+  const cabeceras = bloque.propiedades?.cabeceras || bloque.metadata?.cabeceras || [];
+  const filas = bloque.propiedades?.filas || bloque.metadata?.filas || [];
   const titulo = bloque.contenido;
 
   return (

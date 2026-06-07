@@ -35,6 +35,19 @@ export default class ApiGestorTemaRepositorio {
     return resultado.datos; 
   }
 
+  async subirGaleria(archivos) {
+    const formData = new FormData();
+    Array.from(archivos).forEach(archivo => {
+      formData.append('imagenes[]', archivo);
+    });
+
+    const resultado = await clienteHttp.post('/archivos/galeria', formData);
+    if (resultado.error) {
+      throw new Error(resultado.mensaje || 'Error al subir galería.');
+    }
+    return resultado.datos;
+  }
+
   async obtenerTodosLosTemas(filtros = {}) {
     const queryParams = new URLSearchParams();
     Object.keys(filtros).forEach(key => {

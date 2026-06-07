@@ -5,8 +5,8 @@ import { ArrowRight, HelpCircle } from 'lucide-react';
  * Renderizador para bloques de tipo LISTA.
  */
 export default function ListaRenderizador({ bloque }) {
-  const elementos = bloque.propiedades?.elementos || [];
-  const ordenada = bloque.propiedades?.ordenada || false;
+  const elementos = bloque.propiedades?.elementos || bloque.metadata?.elementos || [];
+  const ordenada = bloque.propiedades?.ordenada ?? bloque.metadata?.ordenada ?? false;
   const titulo = bloque.contenido;
 
   return (

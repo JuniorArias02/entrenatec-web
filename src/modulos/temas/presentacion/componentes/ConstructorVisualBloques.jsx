@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, ArrowUp, ArrowDown, Save, FileImage, Type, Heading, Video, UploadCloud, Heading2, Images, FileText, Link, Table, List, Code, Gamepad2, HelpCircle, Minus, Activity } from 'lucide-react';
 import { Alerta } from '@/compartido/utilidades/Alerta';
+import { obtenerUrlCompleta } from '@/compartido/utilidades/obtenerUrlCompleta';
 
-export default function ConstructorVisualBloques({ bloquesIniciales = [], temaId, alGuardar, subirArchivo, cargando }) {
+export default function ConstructorVisualBloques({ bloquesIniciales = [], temaId, alGuardar, subirArchivo, subirGaleria, cargando }) {
   const [bloques, setBloques] = useState(bloquesIniciales);
 
   // Subcomponente de botón para la barra de herramientas
@@ -17,12 +18,17 @@ export default function ConstructorVisualBloques({ bloquesIniciales = [], temaId
   );
 
   const agregarBloque = (tipo) => {
+    let metadataInicial = {};
+    if (tipo === 'TITULO') metadataInicial = { nivel: 'h2', color: '#111827' };
+    else if (tipo === 'CODIGO') metadataInicial = { lenguaje: 'javascript' };
+    else if (tipo === 'LINK') metadataInicial = { texto: 'Haz clic aquí' };
+    else if (tipo === 'LISTA') metadataInicial = { ordenada: false, elementos: ['Elemento 1', 'Elemento 2'] };
+    else if (tipo === 'TABLA') metadataInicial = { cabeceras: ['Columna 1', 'Columna 2'], filas: [['Dato 1', 'Dato 2']] };
+
     const nuevoBloque = {
       tipo,
       contenido: '',
-      metadata: tipo === 'TITULO' ? { nivel: 'h2', color: '#111827' } : 
-                tipo === 'CODIGO' ? { lenguaje: 'javascript' } : 
-                tipo === 'LINK' ? { texto: 'Haz clic aquí' } : {},
+      metadata: metadataInicial,
       orden: bloques.length + 1,
       visible: true,
       _uiId: Date.now() // Solo para React Key temporal
@@ -92,6 +98,35 @@ export default function ConstructorVisualBloques({ bloquesIniciales = [], temaId
     } catch (error) {
       Alerta.error('Error_Subida.exe', error.message);
       actualizarBloque(index, 'contenido', ''); // Revertir en caso de error
+    }
+  };
+
+  const handleSubirGaleriaParaBloque = async (e, index) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    try {
+      const resultado = await subirGaleria(files);
+      const urls = resultado.map(item => item.url);
+      
+      setBloques(prev => {
+        const nuevos = [...prev];
+        const bloque = nuevos[index];
+        const metadataActual = bloque.metadata || {};
+        const imagenesAnteriores = metadataActual.imagenes || [];
+        
+        nuevos[index] = { 
+          ...bloque, 
+          metadata: { 
+            ...metadataActual, 
+            imagenes: [...imagenesAnteriores, ...urls] 
+          } 
+        };
+        return nuevos;
+      });
+      
+    } catch (error) {
+      Alerta.error('Error_Galeria.exe', error.message);
     }
   };
 
@@ -268,34 +303,240 @@ export default function ConstructorVisualBloques({ bloquesIniciales = [], temaId
                     </div>
                     {(bloque.contenido || bloque.metadata?.url) && (
                       <div className="mt-4 border-2 border-dashed border-black p-2 bg-white flex justify-center overflow-hidden">
-                        <img src={bloque.contenido || bloque.metadata?.url} alt="Preview" className="max-h-64 w-auto object-contain" />
+                        <img src={obtenerUrlCompleta(bloque.contenido || bloque.metadata?.url)} alt="Preview" className="max-h-64 w-auto object-contain" />
                       </div>
                     )}
                   </div>
                 )}
 
                 {bloque.tipo === 'GALERIA' && (
-                  <div className="flex flex-col gap-2">
-                    <textarea 
-                      value={bloque.contenido}
-                      onChange={(e) => actualizarBloque(index, 'contenido', e.target.value)}
-                      placeholder="Ingresa una URL de imagen por línea..."
-                      rows="4"
-                      className="w-full border-2 border-black p-2 outline-none focus:border-azul-secundario text-sm bg-white resize-y"
-                    />
-                    <div className="text-xs font-mono text-gray-500">Agrega múltiples URLs separadas por saltos de línea.</div>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex flex-col md:flex-row gap-2">
+                      <div className="flex-1">
+                        <textarea 
+                          value={bloque.contenido || ''}
+                          onChange={(e) => actualizarBloque(index, 'contenido', e.target.value)}
+                          placeholder="Ingresa un título o descripción para la galería..."
+                          rows="2"
+                          className="w-full border-2 border-black p-2 outline-none focus:border-azul-secundario text-sm bg-white resize-y"
+                        />
+                      </div>
+                      <div className="shrink-0">
+                        <label className="bg-white border-2 border-black px-3 py-2 text-xs font-bold uppercase font-mono cursor-pointer hover:bg-gray-100 flex flex-col items-center justify-center gap-1 shadow-retro-sm h-full">
+                          <UploadCloud className="w-5 h-5 text-azul-secundario" />
+                          <span className="text-center">SUBIR<br/>IMÁGENES</span>
+                          <input 
+                            type="file" 
+                            accept="image/*"
+                            multiple
+                            onChange={(e) => handleSubirGaleriaParaBloque(e, index)} 
+                            className="hidden"
+                          />
+                        </label>
+                      </div>
+                    </div>
+                    {bloque.metadata?.imagenes && bloque.metadata.imagenes.length > 0 && (
+                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 border-2 border-dashed border-gray-300 p-2 bg-gray-50 mt-2">
+                        {bloque.metadata.imagenes.map((imgUrl, i) => (
+                          <div key={i} className="aspect-square border border-black bg-white flex items-center justify-center overflow-hidden relative group">
+                            <img src={obtenerUrlCompleta(imgUrl)} alt={`Previsualización ${i}`} className="w-full h-full object-cover" />
+                            {/* Opcional: un botón para remover si quieren */}
+                            <button 
+                              onClick={() => {
+                                const nuevasImg = [...bloque.metadata.imagenes];
+                                nuevasImg.splice(i, 1);
+                                actualizarMetadata(index, 'imagenes', nuevasImg);
+                              }}
+                              className="absolute top-1 right-1 bg-red-500 text-white p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
 
-                {['LISTA', 'TABLA'].includes(bloque.tipo) && (
-                  <div className="flex flex-col gap-2">
-                    <textarea 
-                      value={bloque.contenido}
+                {bloque.tipo === 'LISTA' && (
+                  <div className="flex flex-col gap-3">
+                    <input 
+                      type="text"
+                      value={bloque.contenido || ''}
                       onChange={(e) => actualizarBloque(index, 'contenido', e.target.value)}
-                      placeholder={`Escribe el contenido de la ${bloque.tipo.toLowerCase()} aquí (puedes usar HTML o Markdown simple)...`}
-                      rows="5"
-                      className="w-full border-2 border-black p-2 outline-none focus:border-azul-secundario text-sm bg-white resize-y font-mono"
+                      placeholder="Título de la lista (opcional)..."
+                      className="w-full border-2 border-black p-2 outline-none focus:border-azul-secundario text-sm bg-white font-bold"
                     />
+                    <div className="flex items-center gap-2">
+                      <label className="text-xs font-mono font-bold">Tipo de lista:</label>
+                      <select 
+                        value={bloque.metadata?.ordenada ? 'true' : 'false'}
+                        onChange={(e) => actualizarMetadata(index, 'ordenada', e.target.value === 'true')}
+                        className="border-2 border-black p-1 text-xs font-mono bg-white cursor-pointer"
+                      >
+                        <option value="false">Desordenada (Viñetas)</option>
+                        <option value="true">Ordenada (Números)</option>
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      {(bloque.metadata?.elementos || []).map((elemento, elIdx) => (
+                        <div key={elIdx} className="flex gap-2 items-center">
+                          <span className="font-mono text-xs w-6 text-center text-gray-500 font-bold">
+                            {bloque.metadata?.ordenada ? `${elIdx + 1}.` : '★'}
+                          </span>
+                          <input 
+                            type="text"
+                            value={elemento}
+                            onChange={(e) => {
+                              const nuevosElementos = [...(bloque.metadata?.elementos || [])];
+                              nuevosElementos[elIdx] = e.target.value;
+                              actualizarMetadata(index, 'elementos', nuevosElementos);
+                            }}
+                            placeholder={`Elemento ${elIdx + 1}`}
+                            className="flex-1 border-2 border-black p-1.5 outline-none focus:border-azul-secundario text-sm bg-white"
+                          />
+                          <button 
+                            onClick={() => {
+                              const nuevosElementos = [...(bloque.metadata?.elementos || [])];
+                              nuevosElementos.splice(elIdx, 1);
+                              actualizarMetadata(index, 'elementos', nuevosElementos);
+                            }}
+                            className="bg-red-50 text-red-600 border border-red-300 p-1.5 hover:bg-red-500 hover:text-white"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    <button 
+                      onClick={() => {
+                        const nuevosElementos = [...(bloque.metadata?.elementos || []), ''];
+                        actualizarMetadata(index, 'elementos', nuevosElementos);
+                      }}
+                      className="bg-gray-100 border-2 border-dashed border-gray-400 p-2 text-xs font-mono font-bold hover:bg-gray-200 text-gray-600"
+                    >
+                      + AGREGAR ELEMENTO
+                    </button>
+                  </div>
+                )}
+
+                {bloque.tipo === 'TABLA' && (
+                  <div className="flex flex-col gap-3 overflow-x-auto">
+                    <input 
+                      type="text"
+                      value={bloque.contenido || ''}
+                      onChange={(e) => actualizarBloque(index, 'contenido', e.target.value)}
+                      placeholder="Título de la tabla (opcional)..."
+                      className="w-full border-2 border-black p-2 outline-none focus:border-azul-secundario text-sm bg-white font-bold"
+                    />
+                    
+                    <div className="bg-white border-2 border-black p-2">
+                      <table className="w-full text-left border-collapse">
+                        <thead>
+                          <tr>
+                            {(bloque.metadata?.cabeceras || []).map((cabecera, cIdx) => (
+                              <th key={cIdx} className="border border-black bg-celeste p-1 min-w-[120px]">
+                                <div className="flex items-center gap-1">
+                                  <input 
+                                    type="text"
+                                    value={cabecera}
+                                    onChange={(e) => {
+                                      const nuevasCabeceras = [...(bloque.metadata?.cabeceras || [])];
+                                      nuevasCabeceras[cIdx] = e.target.value;
+                                      actualizarMetadata(index, 'cabeceras', nuevasCabeceras);
+                                    }}
+                                    className="w-full bg-transparent outline-none font-bold text-xs uppercase"
+                                    placeholder="COLUMNA"
+                                  />
+                                  <button 
+                                    onClick={() => {
+                                      const nuevasCabeceras = [...(bloque.metadata?.cabeceras || [])];
+                                      nuevasCabeceras.splice(cIdx, 1);
+                                      const nuevasFilas = (bloque.metadata?.filas || []).map(f => {
+                                        const nf = [...f];
+                                        nf.splice(cIdx, 1);
+                                        return nf;
+                                      });
+                                      actualizarMetadata(index, 'cabeceras', nuevasCabeceras);
+                                      actualizarMetadata(index, 'filas', nuevasFilas);
+                                    }}
+                                    className="text-red-600 hover:text-red-800 shrink-0"
+                                    title="Eliminar columna"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              </th>
+                            ))}
+                            <th className="border border-black p-1 w-10 text-center bg-gray-100">
+                              <button 
+                                onClick={() => {
+                                  const nuevasCabeceras = [...(bloque.metadata?.cabeceras || []), `Col ${(bloque.metadata?.cabeceras?.length || 0) + 1}`];
+                                  const nuevasFilas = (bloque.metadata?.filas || []).map(f => [...f, '']);
+                                  actualizarMetadata(index, 'cabeceras', nuevasCabeceras);
+                                  actualizarMetadata(index, 'filas', nuevasFilas);
+                                }}
+                                className="text-azul-secundario hover:text-azul-oscuro font-bold flex justify-center w-full"
+                                title="Añadir columna"
+                              >
+                                <Plus className="w-4 h-4" />
+                              </button>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(bloque.metadata?.filas || []).map((fila, fIdx) => (
+                            <tr key={fIdx}>
+                              {fila.map((celda, cIdx) => (
+                                <td key={cIdx} className="border border-black p-1 bg-gray-50">
+                                  <input 
+                                    type="text"
+                                    value={celda}
+                                    onChange={(e) => {
+                                      const nuevasFilas = [...(bloque.metadata?.filas || [])];
+                                      const nuevaFila = [...nuevasFilas[fIdx]];
+                                      nuevaFila[cIdx] = e.target.value;
+                                      nuevasFilas[fIdx] = nuevaFila;
+                                      actualizarMetadata(index, 'filas', nuevasFilas);
+                                    }}
+                                    className="w-full bg-transparent outline-none text-xs"
+                                    placeholder="..."
+                                  />
+                                </td>
+                              ))}
+                              <td className="border border-black p-1 text-center bg-gray-100">
+                                <button 
+                                  onClick={() => {
+                                    const nuevasFilas = [...(bloque.metadata?.filas || [])];
+                                    nuevasFilas.splice(fIdx, 1);
+                                    actualizarMetadata(index, 'filas', nuevasFilas);
+                                  }}
+                                  className="text-red-600 hover:text-red-800 flex justify-center w-full"
+                                  title="Eliminar fila"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                          <tr>
+                            <td colSpan={(bloque.metadata?.cabeceras || []).length + 1} className="border border-black bg-gray-100 p-1 text-center">
+                              <button 
+                                onClick={() => {
+                                  const longitudFila = (bloque.metadata?.cabeceras || []).length;
+                                  const nuevaFila = Array(longitudFila).fill('');
+                                  const nuevasFilas = [...(bloque.metadata?.filas || []), nuevaFila];
+                                  actualizarMetadata(index, 'filas', nuevasFilas);
+                                }}
+                                className="w-full text-xs font-mono font-bold text-gray-600 hover:text-black py-1"
+                              >
+                                + AÑADIR FILA
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
 

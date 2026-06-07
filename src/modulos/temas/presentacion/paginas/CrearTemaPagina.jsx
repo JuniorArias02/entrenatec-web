@@ -24,6 +24,7 @@ export default function CrearTemaPagina() {
     crearTema,
     guardarBloques,
     subirArchivo,
+    subirGaleria,
     bloques,
     opciones,
     cargarOpciones,
@@ -303,6 +304,7 @@ export default function CrearTemaPagina() {
             temaId={temaBase?.id}
             alGuardar={handleGuardarBloques}
             subirArchivo={subirArchivo}
+            subirGaleria={subirGaleria}
             cargando={cargando}
           />
         )}

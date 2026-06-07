@@ -1,4 +1,5 @@
 import React from 'react';
+import { obtenerUrlCompleta } from '@/compartido/utilidades/obtenerUrlCompleta';
 
 /**
  * Renderizador para bloques de tipo IMAGEN.
@@ -16,7 +17,7 @@ export default function ImagenRenderizador({ bloque }) {
       <div className="border border-gray-300 overflow-hidden bg-gray-50 flex items-center justify-center min-h-[200px]">
         {url ? (
           <img 
-            src={url} 
+            src={obtenerUrlCompleta(url)} 
             alt={leyenda || 'Contenido visual educativo'} 
             className="max-h-[350px] w-full object-cover object-center"
             loading="lazy"

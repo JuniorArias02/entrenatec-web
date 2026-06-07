@@ -115,6 +115,19 @@ export default function usarConstructorTema() {
     }
   }, []);
 
+  const subirGaleria = useCallback(async (archivos) => {
+    setCargando(true);
+    setError(null);
+    try {
+      return await repositorio.subirGaleria(archivos);
+    } catch (e) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
   const cargarOpciones = useCallback(async () => {
     try {
       const [resGrados, resPeriodos, resMaterias] = await Promise.all([
@@ -167,6 +180,7 @@ export default function usarConstructorTema() {
     crearTema,
     guardarBloques,
     subirArchivo,
+    subirGaleria,
     cargarOpciones,
     cambiarEstadoTema
   };

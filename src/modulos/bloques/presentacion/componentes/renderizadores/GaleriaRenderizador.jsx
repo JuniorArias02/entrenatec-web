@@ -1,10 +1,12 @@
 import React from 'react';
+import { obtenerUrlCompleta } from '@/compartido/utilidades/obtenerUrlCompleta';
 
 /**
  * Renderizador para bloques de tipo GALERIA.
  */
 export default function GaleriaRenderizador({ bloque }) {
-  const imagenes = bloque.propiedades?.imagenes || [];
+  const imagenesCrudas = bloque.propiedades?.imagenes || bloque.metadata?.imagenes || [];
+  const imagenes = imagenesCrudas.map(img => typeof img === 'string' ? { url: img } : img);
   const descripcion = bloque.contenido;
 
   return (
@@ -26,7 +28,7 @@ export default function GaleriaRenderizador({ bloque }) {
             <div key={idx} className="bg-white border-2 border-negro shadow-retro-sm p-1 flex flex-col">
               <div className="flex-1 overflow-hidden border border-gray-300 bg-gray-100 flex items-center justify-center min-h-[140px]">
                 <img 
-                  src={img.url} 
+                  src={obtenerUrlCompleta(img.url)} 
                   alt={img.leyenda || `Imagen de galería ${idx + 1}`} 
                   className="w-full h-36 object-cover"
                 />
