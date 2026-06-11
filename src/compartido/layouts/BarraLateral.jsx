@@ -12,7 +12,8 @@ import {
   Edit3,
   Menu,
   HelpCircle,
-  Gamepad2
+  Gamepad2,
+  User
 } from 'lucide-react';
 import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 
@@ -53,6 +54,7 @@ export default function BarraLateral({ menuMovilAbierto, setMenuMovilAbierto }) 
 
   const enlaces = [
     { nombre: 'Inicio', ruta: '/inicio', icono: Home, roles: ['ESTUDIANTE', 'DOCENTE', 'EDITOR', 'ADMIN'] },
+    { nombre: 'Mi Perfil', ruta: '/perfil', icono: User, roles: ['ESTUDIANTE', 'DOCENTE', 'EDITOR', 'ADMIN'] },
     { nombre: 'Plan Curricular', ruta: '/grados', icono: BookOpen, roles: ['ESTUDIANTE', 'DOCENTE', 'EDITOR', 'ADMIN'] },
     { nombre: 'Creador de Temas', ruta: '/temas/crear', icono: Edit3, roles: ['DOCENTE', 'EDITOR', 'ADMIN'] },
     { nombre: 'Gestión de Quizzes', ruta: '/quizzes', icono: HelpCircle, roles: ['DOCENTE', 'EDITOR', 'ADMIN'] },

@@ -4,6 +4,7 @@ import LayoutPrincipal from '../layouts/LayoutPrincipal';
 import PublicoLayout from '../layouts/PublicoLayout';
 import InicioPagina from '@/modulos/inicio/presentacion/paginas/InicioPagina';
 import LandingPagina from '@/modulos/autenticacion/presentacion/paginas/LandingPagina';
+import AuthPagina from '@/modulos/autenticacion/presentacion/paginas/AuthPagina';
 import ConocerMasPagina from '@/modulos/autenticacion/presentacion/paginas/ConocerMasPagina';
 import usarAutenticacion from '@/modulos/autenticacion/presentacion/hooks/usarAutenticacion';
 
@@ -21,6 +22,7 @@ import GestionSopaLetrasPagina from '@/modulos/juegos/presentacion/paginas/Gesti
 import JugarSopaLetrasPagina from '@/modulos/juegos/presentacion/paginas/JugarSopaLetrasPagina';
 import ListadoJuegosEstudiante from '@/modulos/juegos/presentacion/paginas/ListadoJuegosEstudiante';
 import AyudaPagina from '@/modulos/ayuda/presentacion/paginas/AyudaPagina';
+import PerfilPagina from '@/modulos/usuarios/presentacion/paginas/PerfilPagina';
 
 /**
  * Guard para proteger rutas que requieren autenticación.
@@ -81,10 +83,14 @@ function RutaPublica({ children }) {
 export default function AppRutas() {
   return (
     <Routes>
-      {/* Landing Page (Solo para no logueados, redirige si ya hay sesión) */}
+      {/* Rutas Públicas puras (Solo para no logueados, redirige si ya hay sesión) */}
       <Route element={<RutaPublica><PublicoLayout /></RutaPublica>}>
         <Route path="/" element={<LandingPagina />} />
       </Route>
+      
+      {/* Ruta Exclusiva de Login (Ultra Moderna) */}
+      <Route path="/auth" element={<RutaPublica><AuthPagina /></RutaPublica>} />
+      <Route path="/login" element={<Navigate to="/auth" replace />} />
 
       {/* Rutas mixtas (Accesibles por cualquier persona, logueada o no) */}
       <Route element={<PublicoLayout />}>
@@ -96,6 +102,7 @@ export default function AppRutas() {
         {/* Página de Inicio / Dashboard (Accesible por todos los roles) */}
         <Route path="/inicio" element={<InicioPagina />} />
         <Route path="/ayuda" element={<AyudaPagina />} />
+        <Route path="/perfil" element={<PerfilPagina />} />
         
         {/* Módulos Curriculares (Exploración para Estudiantes y vista general) */}
         <Route path="/grados" element={<SeleccionGradosPagina />} />

@@ -426,7 +426,7 @@ export default function CrearTemaPagina() {
                           value={ctGradoId} 
                           onChange={e => setCtGradoId(e.target.value)}
                           disabled={ctSeleccionado !== null}
-                          className="w-full bg-white border-2 border-negro p-2 text-xs font-semibold outline-none disabled:bg-gray-100 disabled:text-gray-500"
+                          className="w-full bg-white border-2 border-negro p-2 text-xs font-semibold outline-none disabled:bg-gray-100 disabled:text-gray-500 text-black"
                         >
                           <option value="">-- Elige un Grado --</option>
                           {opciones.grados.map(g => (
@@ -440,7 +440,7 @@ export default function CrearTemaPagina() {
                           value={ctPeriodoId} 
                           onChange={e => setCtPeriodoId(e.target.value)}
                           disabled={ctSeleccionado !== null || !ctGradoId}
-                          className="w-full bg-white border-2 border-negro p-2 text-xs font-semibold outline-none disabled:bg-gray-100 disabled:text-gray-500"
+                          className="w-full bg-white border-2 border-negro p-2 text-xs font-semibold outline-none disabled:bg-gray-100 disabled:text-gray-500 text-black"
                         >
                           <option value="">-- Elige un Periodo --</option>
                           {opciones.periodos.map(p => (

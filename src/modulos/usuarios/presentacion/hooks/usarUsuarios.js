@@ -64,6 +64,21 @@ export default function usarUsuarios() {
     }
   }, [cargarUsuarios]);
 
+  const actualizarPerfil = useCallback(async (id, datosPerfil) => {
+    setCargando(true);
+    setError(null);
+    try {
+      const perfilActualizado = await repositorio.actualizarPerfil(id, datosPerfil);
+      // Podríamos querer actualizar la sesión también, pero el hook de sesión maneja eso.
+      return perfilActualizado;
+    } catch (e) {
+      setError(e.message);
+      throw e;
+    } finally {
+      setCargando(false);
+    }
+  }, []);
+
   return {
     usuarios,
     cargando,
@@ -71,6 +86,7 @@ export default function usarUsuarios() {
     cargarUsuarios,
     crearUsuario,
     cambiarPassword,
-    cambiarRol
+    cambiarRol,
+    actualizarPerfil
   };
 }

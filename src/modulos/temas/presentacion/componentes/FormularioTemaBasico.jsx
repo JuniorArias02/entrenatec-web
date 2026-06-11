@@ -66,7 +66,7 @@ export default function FormularioTemaBasico({ alEnviar, cargando, opciones = {}
             value={formData.titulo}
             onChange={handleChange}
             onBlur={handleGenerarSlug}
-            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm"
+            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm text-black"
             placeholder="Ej: Hardware y Software"
           />
         </div>
@@ -94,7 +94,7 @@ export default function FormularioTemaBasico({ alEnviar, cargando, opciones = {}
             rows="3"
             value={formData.descripcion}
             onChange={handleChange}
-            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm resize-none"
+            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm resize-none text-black"
             placeholder="Breve resumen del tema..."
           ></textarea>
         </div>
@@ -107,7 +107,7 @@ export default function FormularioTemaBasico({ alEnviar, cargando, opciones = {}
             name="portada"
             accept="image/*"
             onChange={handleChange}
-            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm bg-white cursor-pointer"
+            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm bg-white cursor-pointer text-black"
           />
         </div>
 
@@ -119,7 +119,7 @@ export default function FormularioTemaBasico({ alEnviar, cargando, opciones = {}
             required
             value={formData.grado_id}
             onChange={handleChange}
-            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm cursor-pointer bg-white"
+            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm cursor-pointer bg-white text-black"
           >
             <option value="" disabled>Seleccionar Grado...</option>
             {grados.map(g => (
@@ -136,7 +136,7 @@ export default function FormularioTemaBasico({ alEnviar, cargando, opciones = {}
             required
             value={formData.periodo_id}
             onChange={handleChange}
-            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm cursor-pointer bg-white"
+            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm cursor-pointer bg-white text-black"
           >
             <option value="" disabled>Seleccionar Periodo...</option>
             {periodos.map(p => (
@@ -153,7 +153,7 @@ export default function FormularioTemaBasico({ alEnviar, cargando, opciones = {}
             required
             value={formData.materia_id}
             onChange={handleChange}
-            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm cursor-pointer bg-white"
+            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm cursor-pointer bg-white text-black"
           >
             <option value="" disabled>Seleccionar Materia...</option>
             {materias.map(m => (
@@ -171,7 +171,7 @@ export default function FormularioTemaBasico({ alEnviar, cargando, opciones = {}
             min="1"
             value={formData.orden}
             onChange={handleChange}
-            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm font-mono"
+            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm font-mono text-black"
           />
         </div>
 
@@ -182,7 +182,7 @@ export default function FormularioTemaBasico({ alEnviar, cargando, opciones = {}
             name="estado"
             value={formData.estado}
             onChange={handleChange}
-            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm cursor-pointer bg-white"
+            className="border-2 border-negro px-3 py-2 outline-none focus:border-azul-secundario text-sm cursor-pointer bg-white text-black"
           >
             <option value="BORRADOR">BORRADOR (Oculto a estudiantes)</option>
             <option value="PUBLICADO">PUBLICADO (Visible)</option>

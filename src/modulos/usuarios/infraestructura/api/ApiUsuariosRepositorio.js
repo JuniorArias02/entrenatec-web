@@ -36,4 +36,17 @@ export default class ApiUsuariosRepositorio {
     if (respuesta.error) throw new Error(respuesta.mensaje || 'Error al cambiar rol');
     return respuesta.datos;
   }
+
+  /**
+   * Actualiza el perfil (nombre y correo) de un usuario.
+   */
+  async actualizarPerfil(id, datosPerfil) {
+    const respuesta = await clienteHttp.put(`/usuarios/${id}/perfil`, datosPerfil);
+    if (respuesta.error) {
+      const error = new Error(respuesta.mensaje || 'Error al actualizar el perfil');
+      error.erroresValidacion = respuesta.errores;
+      throw error;
+    }
+    return respuesta.datos;
+  }
 }

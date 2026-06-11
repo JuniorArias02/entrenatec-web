@@ -49,7 +49,7 @@ export default function PublicoLayout() {
             </button>
           ) : (
             <button 
-              onClick={() => setMostrarLogin(true)}
+              onClick={() => navigate('/auth')}
               className="bg-celeste text-negro border-2 border-negro px-3 py-1 font-bold text-xs uppercase shadow-retro-sm hover:bg-white active:translate-y-0.5 active:shadow-none cursor-pointer flex items-center gap-1.5 transition-all"
             >
               <Key className="w-3.5 h-3.5" />
